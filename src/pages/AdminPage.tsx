@@ -13,7 +13,6 @@ export default function AdminPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     
-    // State untuk menyimpan wilayah admin yang login
     const [adminRegion, setAdminRegion] = useState<string | null>(null);
 
     const fetchReports = async () => {
@@ -33,17 +32,15 @@ export default function AdminPage() {
         fetchReports();
     }, []);
 
-    // 🌟 FUNGSI BARU: Menangani pengiriman data feedback dari form modal dashboard ke n8n
-    const handleAdminSubmitFeedback = async (payload: any) => {
+    const handleAdminUpdateProgress = async (id: string | number) => {
         setLoading(true);
         const toastId = toast.loading("Memperbarui status laporan...");
         try {
-            const res = await fetch(N8N_WEBHOOK_POST_FEEDBACK, {
+            const res = await fetch(N8N_WEBHOOK_POST_ON_PROGRESS, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload), // Mengirim payload objek lengkap ke AI Agent
+                body: JSON.stringify({ id }),
             });
-            
             if (res.ok) {
                 toast.success("Status berhasil diperbarui menjadi 'ON PROGRESS'.", { id: toastId });
                 fetchReports();
@@ -54,6 +51,7 @@ export default function AdminPage() {
         } catch (err) {
             toast.error("Terjadi kesalahan sistem. Gagal memperbarui status.", { id: toastId });
         }
+        setLoading(false);
     };
 
     // Ambil daftar kota unik untuk pilihan login admin
