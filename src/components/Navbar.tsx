@@ -22,30 +22,30 @@ export default function Navbar({ searchQuery, setSearchQuery, handleSearch }: Na
                 </Link>
 
                 {/* Nav Links */}
-                <div className="hidden md:flex items-center gap-8 text-sm font-bold text-slate-500">
+                <div className="hidden md:flex items-center mr-6 gap-8 text-sm font-bold text-slate-500">
                     <Link to="/" className={location.pathname === "/" ? "text-slate-900" : "hover:text-slate-900"}>Home</Link>
-                    <Link to="/about" className={location.pathname === "/about" ? "text-slate-900" : "hover:text-slate-900"}>About</Link>
+                    <Link to="/about" className={location.pathname === "/about" ? "text-slate-900" : "hover:text-slate-900"}>Information</Link>
                     <Link to="/report" className={location.pathname === "/report" ? "text-slate-900" : "hover:text-slate-900"}>Report</Link>
                     <Link to="/admin" className={location.pathname === "/admin" ? "text-red-500" : "text-red-400 hover:text-red-500"}>Admin</Link>
                 </div>
 
                 {/* Search Bar Kuning */}
-                <form 
-                    onSubmit={(e) => {
-                        if (handleSearch) handleSearch(e);
-                        else e.preventDefault();
-                    }} 
-                    className="flex items-center bg-[#fef0c7] rounded-full px-4 py-2.5 w-64 transition-all focus-within:ring-2 focus-within:ring-yellow-400"
-                >
-                    <Search className="text-slate-600 w-4 h-4 mr-2 shrink-0" />
-                    <input 
-                        type="text" 
-                        placeholder="search location..." 
-                        value={searchQuery || ""}
-                        onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
-                        className="bg-transparent border-none outline-none text-sm w-full text-slate-800 placeholder-slate-500"
-                    />
-                </form>
+                {/* Search bar hanya muncul jika ada fungsi handleSearch dari parent component (seperti di halaman Report) */}
+                {handleSearch && setSearchQuery && (
+                    <form 
+                        onSubmit={handleSearch} 
+                        className="flex items-center bg-[#fef0c7] rounded-full px-4 py-2.5 w-64 transition-all focus-within:ring-2 focus-within:ring-yellow-400"
+                    >
+                        <Search className="text-slate-600 w-4 h-4 mr-2 shrink-0" />
+                        <input 
+                            type="text" 
+                            placeholder="search location..." 
+                            value={searchQuery || ""}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="bg-transparent border-none outline-none text-sm w-full text-slate-800 placeholder-slate-500"
+                        />
+                    </form>
+                )}
             </div>
         </nav>
     );
