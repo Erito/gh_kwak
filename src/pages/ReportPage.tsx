@@ -4,10 +4,10 @@ import MapComponent from "../components/MapComponent";
 import ReportForm from "../components/ReportForm";
 import { Toaster, toast } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { Map } from "lucide-react";
 import type { Report, Location, FormDataState, NominatimResponse } from "../types";
 
 const IMGBB_API_KEY = "eb35e048c700026796fb17f3edfb4d43";
-// Menggunakan URL production (tanpa -test)
 const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
 const N8N_WEBHOOK_POST_LAPOR = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/lapor";
 const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan";
@@ -17,9 +17,11 @@ export default function ReportPage() {
     const [newLocation, setNewLocation] = useState<Location | null>(null);
     const [form, setForm] = useState<FormDataState>({ deskripsi: "", file: null });
     const [loading, setLoading] = useState<boolean>(false);
-    const [pageLoading, setPageLoading] = useState<boolean>(true); // State untuk loading awal
+    const [pageLoading, setPageLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [mapCenter, setMapCenter] = useState<[number, number]>([-6.2574, 106.6183]);
+    // Mobile: toggle between map and form
+    const [mobileView, setMobileView] = useState<"map" | "form">("map");
 
     const fetchReports = async () => {
         setPageLoading(true);
@@ -127,6 +129,12 @@ export default function ReportPage() {
         setLoading(false);
     };
 
+    // When user picks location on map, auto-switch to form on mobile
+    const handleSetNewLocation = (loc: Location | null) => {
+        setNewLocation(loc);
+        if (loc) setMobileView("form");
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -136,35 +144,62 @@ export default function ReportPage() {
             className="min-h-screen bg-slate-100 flex flex-col"
         >
             <Toaster position="top-center" reverseOrder={false} />
-            <Navbar 
-                searchQuery={searchQuery} 
-                setSearchQuery={setSearchQuery} 
-                handleSearch={handleSearch} 
+            <Navbar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                handleSearch={handleSearch}
             />
-            
-            <main className="grow max-w-7xl mx-auto w-full px-4 pt-28 pb-8">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {pageLoading ? (
-                        <>
-                            {/* Skeleton untuk Map */}
-                            <div className="lg:col-span-2 bg-slate-200 rounded-2xl animate-pulse h-[75vh]"></div>
-                            {/* Skeleton untuk Form */}
-                            <div className="lg:col-span-1 bg-slate-200 rounded-2xl animate-pulse h-96 lg:h-[75vh]"></div>
-                        </>
-                    ) : (
-                        <>
+
+            <main className="grow max-w-7xl mx-auto w-full px-3 sm:px-4 pt-20 sm:pt-24 md:pt-28 pb-4 md:pb-8">
+                
+                {/* Mobile Tab Switcher */}
+                <div className="flex lg:hidden mb-3 bg-white rounded-xl p-1 shadow-sm border border-slate-200">
+                    <button
+                        onClick={() => setMobileView("map")}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                            mobileView === "map" ? "bg-slate-800 text-white shadow" : "text-slate-500"
+                        }`}
+                    >
+                        <Map className="w-4 h-4" />
+                        Peta
+                    </button>
+                    <button
+                        onClick={() => setMobileView("form")}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                            mobileView === "form" ? "bg-red-500 text-white shadow" : "text-slate-500"
+                        }`}
+                    >
+                        Formulir Laporan
+                        {newLocation && <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />}
+                    </button>
+                </div>
+
+                {pageLoading ? (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                        {/* Skeleton Map */}
+                        <div className="lg:col-span-2 bg-slate-200 rounded-2xl animate-pulse h-[55vh] md:h-[65vh] lg:h-[75vh]"></div>
+                        {/* Skeleton Form */}
+                        <div className="lg:col-span-1 bg-slate-200 rounded-2xl animate-pulse h-64 lg:h-[75vh]"></div>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                        {/* Map - hidden on mobile when form view is active */}
+                        <div className={`lg:block lg:col-span-2 ${mobileView === "map" ? "block" : "hidden"}`}>
                             <MapComponent
                                 mapCenter={mapCenter}
                                 reports={reports}
                                 newLocation={newLocation}
-                                setNewLocation={setNewLocation}
+                                setNewLocation={handleSetNewLocation}
                                 handleAdminUpdate={handleAdminUpdate}
                                 loading={loading}
                             />
+                        </div>
+                        {/* Form - hidden on mobile when map view is active */}
+                        <div className={`lg:block lg:col-span-1 ${mobileView === "form" ? "block" : "hidden"}`}>
                             <ReportForm newLocation={newLocation} form={form} setForm={setForm} handleLapor={handleLapor} loading={loading} />
-                        </>
-                    )}
-                </div>
+                        </div>
+                    </div>
+                )}
             </main>
         </motion.div>
     );

@@ -23,7 +23,6 @@ const greenIcon = new L.Icon({
     iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
 });
 
-// --- Controller Helper ---
 const MapController = ({ center }: { center: [number, number] }) => {
     const map = useMap();
     useEffect(() => {
@@ -42,7 +41,6 @@ interface MapComponentProps {
 }
 
 export default function MapComponent({ mapCenter, reports, newLocation, setNewLocation, handleAdminUpdate, loading }: MapComponentProps) {
-    // State lokal untuk file perbaikan per popup
     const [adminFile, setAdminFile] = useState<File | null>(null);
 
     const LocationPicker = () => {
@@ -59,7 +57,7 @@ export default function MapComponent({ mapCenter, reports, newLocation, setNewLo
     };
 
     return (
-        <div className="lg:col-span-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100 h-150 z-0">
+        <div className="lg:col-span-2 bg-white p-1.5 md:p-2 rounded-2xl shadow-sm border border-slate-100 h-[55vh] sm:h-[60vh] md:h-[65vh] lg:h-150 z-0">
             <MapContainer center={mapCenter} zoom={13} className="h-full w-full rounded-xl" zoomControl={false}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <MapController center={mapCenter} />
@@ -68,7 +66,7 @@ export default function MapComponent({ mapCenter, reports, newLocation, setNewLo
                 {reports.map((r, idx) => (
                     <Marker key={idx} position={[r.Latitude, r.Longitude]} icon={r.Status === "RESOLVED" ? greenIcon : redIcon}>
                         <Popup className="custom-popup">
-                            <div className="p-1 min-w-50">
+                            <div className="p-1 min-w-[160px] max-w-[220px]">
                                 <div
                                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold mb-2 ${r.Status === "RESOLVED"
                                             ? "bg-green-100 text-green-700"
