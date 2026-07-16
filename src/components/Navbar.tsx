@@ -1,7 +1,8 @@
 import React from "react";
 import { useLocation, Link } from 'react-router-dom';
 import { Search } from "lucide-react";
-import LogoOnlyBlack from "../asset/logo-only-black.svg";
+import LogoOnlyBlack from "../asset/logo-only-black.svg"; // Adjust the path to your logo image
+
 interface HeaderProps {
     searchQuery: string;
     setSearchQuery: (query: string) => void;
