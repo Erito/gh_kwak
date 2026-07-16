@@ -123,7 +123,7 @@ export default function AdminDashboard({ reports, onClose, onUpdateProgress, loa
                                             </span>
                                         </td>
                                         <td className="px-4 py-4 text-center">
-                                            <StatusBadge status="{report.Status}"/>
+                                            <StatusBadge status={report.Status}/>
                                         </td>
                                         <td className="px-4 py-4 text-center">
                                             {String(report.Status).toUpperCase() === "PENDING" ? (
