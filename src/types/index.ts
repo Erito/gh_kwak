@@ -13,6 +13,7 @@ export interface Report {
     Level_Urgensi?: string;
     Analisis_AI?: string;
     Kota_Kabupaten?: string;
+    Instansi_Pelaksanaan?: string;
 }
 //tes
 export interface Location {

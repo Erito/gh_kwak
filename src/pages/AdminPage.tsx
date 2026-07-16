@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 import type { Report } from "../types";
 
+const IMGBB_API_KEY = "eb35e048c700026796fb17f3edfb4d43";
 const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
-const N8N_WEBHOOK_POST_ON_PROGRESS = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan";
+
+const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan";
 
 export default function AdminPage() {
     const [reports, setReports] = useState<Report[]>([]);
@@ -31,30 +33,42 @@ export default function AdminPage() {
     useEffect(() => {
         fetchReports();
     }, []);
-
-    const handleAdminUpdateProgress = async (id: string | number) => {
+    
+    // Fungsi Mengubah Status menjadi RESOLVED langsung dari PENDING
+    const handleAdminResolve = async (id: string | number, instansi: string, file: File) => {
         setLoading(true);
-        const toastId = toast.loading("Memperbarui status laporan...");
+        const toastId = toast.loading("Mengunggah foto dan memvalidasi perbaikan via AI...");
         try {
-            const res = await fetch(N8N_WEBHOOK_POST_ON_PROGRESS, {
+            // Upload foto ke ImgBB
+            const formData = new FormData();
+            formData.append("image", file);
+            const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: "POST", body: formData });
+            const imgData = await imgRes.json();
+            const foto_url = imgData.data.url;
+
+            // Kirim data ke Webhook n8n
+            const res = await fetch(N8N_WEBHOOK_POST_SELESAI, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id }),
+                body: JSON.stringify({ 
+                    id, 
+                    instansi_terkait: instansi, // Diambil oleh n8n untuk Instansi_Pelaksanaan
+                    foto_url 
+                }),
             });
+
             if (res.ok) {
-                toast.success("Status berhasil diperbarui menjadi 'ON PROGRESS'.", { id: toastId });
-                fetchReports();
+                toast.success("Sukses! Perbaikan divalidasi dan disimpan.", { id: toastId });
+                fetchReports(); // Refresh data untuk update tampilan
             } else {
-                const errorData = await res.json().catch(() => ({ message: "Gagal memperbarui status." }));
-                toast.error(errorData.message || "Gagal memperbarui status.", { id: toastId });
+                toast.error("Ditolak AI! Gambar tidak valid atau jalan belum diperbaiki.", { id: toastId });
             }
         } catch (err) {
-            toast.error("Terjadi kesalahan sistem. Gagal memperbarui status.", { id: toastId });
+            toast.error("Terjadi kesalahan saat memproses perbaikan ke Server.", { id: toastId });
         }
         setLoading(false);
     };
 
-    // Ambil daftar kota unik untuk pilihan login admin
     const uniqueCities = Array.from(new Set(reports.map(r => r.Kota_Kabupaten).filter(Boolean)));
 
     return (
@@ -62,7 +76,6 @@ export default function AdminPage() {
             <Toaster position="top-center" reverseOrder={false} />
             <AnimatePresence mode="wait">
             {!adminRegion ? (
-                // Layar "Pilih Wilayah" untuk Admin
                 <motion.div
                     key="region-select"
                     initial={{ opacity: 0 }}
@@ -77,7 +90,6 @@ export default function AdminPage() {
                         
                         <div className="space-y-3">
                             {initialLoading ? (
-                                // Skeleton loading untuk daftar kota
                                 <div className="space-y-3">
                                     {Array.from({ length: 3 }).map((_, i) => (
                                         <div key={i} className="w-full h-15 bg-slate-200 rounded-xl animate-pulse" />
@@ -103,7 +115,6 @@ export default function AdminPage() {
                     </div>
                 </motion.div>
             ) : (
-                // Tampilan Dashboard setelah Admin memilih wilayah
                 <motion.div
                     key="dashboard"
                     initial={{ opacity: 0, y: 20 }}
@@ -114,7 +125,7 @@ export default function AdminPage() {
                     <AdminDashboard 
                         reports={reports.filter(r => r.Kota_Kabupaten === adminRegion)}
                         onClose={() => setAdminRegion(null)}
-                        onUpdateProgress={handleAdminUpdateProgress} 
+                        onResolve={handleAdminResolve} 
                         loading={loading} 
                     />
                 </motion.div>
