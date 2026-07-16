@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export default function Heroes() {
     return (
         <section className="relative h-screen w-full bg-slate-200 overflow-hidden">
@@ -5,7 +7,12 @@ export default function Heroes() {
             <div className="absolute inset-0 bg-[url('/assets/heroes/bgMap.svg')] bg-cover bg-center bg-no-repeat opacity-80"></div>
 
             {/* Kotak Kuning Melengkung di Kiri */}
-            <div className="absolute top-0 left-0 h-[85vh] w-full md:w-[50%] bg-[#FBD715] rounded-br-[120px] shadow-2xl z-10 flex flex-col justify-center px-10 md:px-20">
+            <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute top-0 left-0 h-[85vh] w-full md:w-[50%] bg-[#FBD715] rounded-br-[120px] shadow-2xl z-10 flex flex-col justify-center px-10 md:px-20"
+            >
                 
                 {/* Logo & Judul */}
                 <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 mb-16 mt-16">
@@ -45,7 +52,7 @@ export default function Heroes() {
                         </p>
                     </li>
                 </ul>
-            </div>
+            </motion.div>
         </section>
     );
 }

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import ReportCardSkeleton from "../components/ReportCardSkeleton"; // Impor skeleton
 import { MapPin } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { motion } from "framer-motion"; // Impor motion
 import type { Report } from "../types";
 
 // Setup Icon Default Leaflet agar tidak error/hilang
@@ -55,10 +57,16 @@ export default function HomePages() {
         : defaultCenter;
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-screen bg-slate-50"
+        >
             <Navbar />
             
-            <main className="max-w-6xl mx-auto px-4 pt-32 pb-12">
+            <main className="max-w-6xl mx-auto px-4 pt-28 md:pt-32 pb-12">
                 {/* Header & Filter */}
                 <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                     <div>
@@ -81,12 +89,20 @@ export default function HomePages() {
                 </div>
 
                 {loading ? (
-                    <div className="text-center py-20 text-slate-500 animate-pulse">Memuat data dari server...</div>
+                    // Tampilan Skeleton Loading
+                    <>
+                        <div className="w-full h-100 bg-slate-200 rounded-2xl animate-pulse mb-8"></div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {Array.from({ length: 6 }).map((_, i) => (
+                                <ReportCardSkeleton key={i} />
+                            ))}
+                        </div>
+                    </>
                 ) : (
                     <>
                         {/* 1. MAPS AREA (Baru ditambahkan) */}
                         <div className="w-full h-100 bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 mb-8 z-0 relative">
-                            <MapContainer 
+                            <MapContainer
                                 center={mapCenter} 
                                 zoom={12} 
                                 scrollWheelZoom={true} 
@@ -160,6 +176,6 @@ export default function HomePages() {
                     </>
                 )}
             </main>
-        </div>
+        </motion.div>
     );
 }
