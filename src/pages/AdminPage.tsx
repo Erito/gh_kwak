@@ -4,13 +4,14 @@ import { ShieldCheck, Map } from "lucide-react";
 import type { Report } from "../types";
 
 const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
-const N8N_WEBHOOK_POST_ON_PROGRESS = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/on-progress";
+// Menggunakan URL Webhook respons admin (Webhook 3)
+const N8N_WEBHOOK_POST_FEEDBACK = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan"; 
 
 export default function AdminPage() {
     const [reports, setReports] = useState<Report[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     
-    // State baru untuk menyimpan wilayah admin yang login
+    // State untuk menyimpan wilayah admin yang login
     const [adminRegion, setAdminRegion] = useState<string | null>(null);
 
     const fetchReports = async () => {
@@ -27,22 +28,28 @@ export default function AdminPage() {
         fetchReports();
     }, []);
 
-    const handleAdminUpdateProgress = async (id: string | number) => {
+    // 🌟 FUNGSI BARU: Menangani pengiriman data feedback dari form modal dashboard ke n8n
+    const handleAdminSubmitFeedback = async (payload: any) => {
         setLoading(true);
         try {
-            const res = await fetch(N8N_WEBHOOK_POST_ON_PROGRESS, {
+            const res = await fetch(N8N_WEBHOOK_POST_FEEDBACK, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id }),
+                body: JSON.stringify(payload), // Mengirim payload objek lengkap ke AI Agent
             });
+            
             if (res.ok) {
-                alert("Status berhasil diupdate!");
-                fetchReports();
+                alert("Respons berhasil dikirim ke AI dan status diperbarui!");
+                fetchReports(); // Segera segarkan data tabel dari Sheets terbaru
+            } else {
+                alert("Gagal memproses respons. Silakan coba lagi.");
             }
         } catch (err) {
-            alert("Terjadi kesalahan sistem.");
+            alert("Terjadi kesalahan sistem saat menghubungi server.");
+            console.error(err);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     // Ambil daftar kota unik untuk pilihan login admin
@@ -88,9 +95,9 @@ export default function AdminPage() {
     return (
         <div className="min-h-screen bg-slate-200">
             <AdminDashboard 
-                reports={regionalReports} // Data yang masuk ke tabel sudah otomatis terfilter!
-                onClose={() => setAdminRegion(null)} // Tombol close digunakan untuk Log Out wilayah
-                onUpdateProgress={handleAdminUpdateProgress} 
+                reports={regionalReports} 
+                onClose={() => setAdminRegion(null)} 
+                onSubmitFeedback={handleAdminSubmitFeedback} // 👈 Diubah ke prop fungsi yang baru
                 loading={loading} 
             />
         </div>
