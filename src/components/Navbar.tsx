@@ -14,13 +14,16 @@ interface HeaderProps {
 export default function Navbar({ searchQuery, setSearchQuery, handleSearch, isSearching, onLogoClick }: HeaderProps) {
     const location = useLocation();
 
-    const validPaths = ["/", "/report"];
+    const validPaths = [
+        "/", "/report", "/about"
+    ];
+    
     const shouldShowNavbar = validPaths.includes(location.pathname);
 
     if (!shouldShowNavbar) return null;
 
     return (
-        <header className="fixed right-0 top-6 z-50 flex h-16 w-full max-w-4xl items-center justify-between bg-white pl-8 pr-6 shadow-lg rounded-l-[40px] border-y border-l border-gray-100">
+        <header className="fixed right-0 top-4 z-50 flex h-16 w-full max-w-7xl items-center justify-between bg-white pl-8 pr-6 shadow-lg rounded-l-[40px] border-y border-l border-gray-100">
             
             {/* Logo Area */}
             <button onClick={onLogoClick} className="flex items-center cursor-pointer transition-opacity hover:opacity-80 focus:outline-none">

@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Homepage from "./pages/Homepage";
 import NotFound from "./pages/NotFoundPage";
 import ReportPage from "./pages/ReportPage";
-import Navbar from "./components/Navbar"; // Adjust this path to wherever your Navbar file is saved
+import Navbar from "./components/Navbar"; 
+import AboutPage from "./pages/AboutPage";
 
 export default function App() {
   // 1. Define the search states and handlers required by the Navbar
@@ -63,6 +64,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/report" element={<ReportPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
