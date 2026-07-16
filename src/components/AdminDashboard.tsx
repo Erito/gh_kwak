@@ -10,21 +10,28 @@ interface AdminDashboardProps {
 }
 
 const StatusBadge = ({ status }: { status: Report["Status"] }) => {
-    const statusStyles = {
+    // Penyesuaian agar kebal huruf kecil/besar dari Google Sheets
+    const safeStatus = (status || "").toUpperCase();
+    
+    const statusStyles: Record<string, string> = {
         PENDING: "bg-red-100 text-red-700",
         ON_PROGRESS: "bg-yellow-100 text-yellow-700",
         RESOLVED: "bg-green-100 text-green-700",
     };
+    
+    const currentStyle = statusStyles[safeStatus] || "bg-slate-100 text-slate-700";
+
     return (
-        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusStyles[status]}`}>
-            {status.replace("_", " ")}
+        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${currentStyle}`}>
+            {safeStatus.replace("_", " ")}
         </span>
     );
 };
 
 export default function AdminDashboard({ reports, onClose, onUpdateProgress, loading }: AdminDashboardProps) {
     
-    const sortedReports = [...reports].sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime());
+    // Perbaikan nama kolom untuk pengurutan tanggal (Dibuat_Pada)
+    const sortedReports = [...reports].sort((a, b) => new Date(b.Dibuat_Pada).getTime() - new Date(a.Dibuat_Pada).getTime());
 
     return (
         <motion.div
@@ -53,7 +60,7 @@ export default function AdminDashboard({ reports, onClose, onUpdateProgress, loa
                     <table className="w-full text-sm text-left text-slate-600">
                         <thead className="text-xs text-slate-700 uppercase bg-slate-100 sticky top-0 z-10">
                             <tr>
-                                <th scope="col" className="px-6 py-3">ID</th>
+                                <th scope="col" className="px-6 py-3">ID Laporan</th>
                                 <th scope="col" className="px-6 py-3">Deskripsi</th>
                                 <th scope="col" className="px-6 py-3">Lokasi</th>
                                 <th scope="col" className="px-6 py-3">Dilaporkan</th>
@@ -63,28 +70,30 @@ export default function AdminDashboard({ reports, onClose, onUpdateProgress, loa
                         </thead>
                         <tbody>
                             {sortedReports.map((report) => (
-                                <tr key={report.ID} className="bg-white border-b hover:bg-slate-50">
-                                    <td className="px-6 py-4 font-mono text-xs">#{String(report.ID).slice(0, 8)}</td>
+                                <tr key={report.ID_Laporan} className="bg-white border-b hover:bg-slate-50">
+                                    {/* Menggunakan ID_Laporan */}
+                                    <td className="px-6 py-4 font-mono text-xs">#{String(report.ID_Laporan).slice(0, 8)}</td>
                                     <td className="px-6 py-4 max-w-xs truncate">{report.Deskripsi}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-1 text-slate-500">
                                             <MapPin className="w-3 h-3" />
-                                            <span>{report.Latitude.toFixed(4)}, {report.Longitude.toFixed(4)}</span>
+                                            <span>{Number(report.Latitude).toFixed(4)}, {Number(report.Longitude).toFixed(4)}</span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-1 text-slate-500">
                                             <Clock className="w-3 h-3" />
-                                            <span>{new Date(report.CreatedAt).toLocaleString('id-ID')}</span>
+                                            {/* Menggunakan Dibuat_Pada */}
+                                            <span>{new Date(report.Dibuat_Pada).toLocaleString('id-ID')}</span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <StatusBadge status={report.Status} />
                                     </td>
                                     <td className="px-6 py-4">
-                                        {report.Status === "PENDING" && (
+                                        {String(report.Status).toUpperCase() === "PENDING" && (
                                             <button
-                                                onClick={() => onUpdateProgress(report.ID)}
+                                                onClick={() => onUpdateProgress(report.ID_Laporan)}
                                                 disabled={loading}
                                                 className="font-medium text-yellow-600 hover:underline disabled:opacity-50 disabled:no-underline flex items-center gap-1"
                                             >

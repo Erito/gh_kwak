@@ -1,12 +1,17 @@
 export interface Report {
-    ID: string | number;
+    ID_Laporan: string | number;
+    Nama_Pelapor?: string;
+    Deskripsi: string;
     Latitude: number;
     Longitude: number;
-    Deskripsi: string;
-    Status: "PENDING" | "ON_PROGRESS" | "RESOLVED";
     Foto_Lapor: string;
+    Status: "PENDING" | "ON_PROGRESS" | "RESOLVED";
     Foto_Perbaikan?: string;
-    CreatedAt: string;
+    Dibuat_Pada: string;
+    Selesai_Pada?: string;
+    Valid_AI?: string | boolean;
+    Level_Urgensi?: string;
+    Analisis_AI?: string;
 }
 
 export interface Location {

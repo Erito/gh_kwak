@@ -70,13 +70,12 @@ export default function MapComponent({ mapCenter, reports, newLocation, setNewLo
                         <Popup className="custom-popup">
                             <div className="p-1 min-w-50">
                                 <div
-                                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold mb-2 ${
-                                        r.Status === "RESOLVED"
+                                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold mb-2 ${r.Status === "RESOLVED"
                                             ? "bg-green-100 text-green-700"
                                             : r.Status === "ON_PROGRESS"
-                                            ? "bg-yellow-100 text-yellow-700"
-                                            : "bg-red-100 text-red-700"
-                                    }`}
+                                                ? "bg-yellow-100 text-yellow-700"
+                                                : "bg-red-100 text-red-700"
+                                        }`}
                                 >
                                     {r.Status === "RESOLVED" ? (
                                         <CheckCircle2 className="w-3 h-3" />
@@ -113,7 +112,7 @@ export default function MapComponent({ mapCenter, reports, newLocation, setNewLo
                                             className="text-xs w-full mb-2 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:bg-slate-200 file:text-slate-700"
                                         />
                                         <button
-                                            onClick={() => adminFile && handleAdminUpdate(r.ID, adminFile)}
+                                            onClick={() => adminFile && handleAdminUpdate(r.ID_Laporan, adminFile)}
                                             disabled={loading || !adminFile}
                                             className="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs py-2 rounded-md transition-colors disabled:opacity-50"
                                         >
