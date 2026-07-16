@@ -12,6 +12,7 @@ export interface Report {
     Valid_AI?: string | boolean;
     Level_Urgensi?: string;
     Analisis_AI?: string;
+    Kota_Kabupaten?: string;
 }
 //tes
 export interface Location {
