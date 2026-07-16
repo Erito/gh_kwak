@@ -13,7 +13,6 @@ export default function AdminPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     
-    // State baru untuk menyimpan wilayah admin yang login
     const [adminRegion, setAdminRegion] = useState<string | null>(null);
 
     const fetchReports = async () => {
