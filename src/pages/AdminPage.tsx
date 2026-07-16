@@ -4,7 +4,7 @@ import { ShieldCheck, Map } from "lucide-react";
 import type { Report } from "../types";
 
 const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
-const N8N_WEBHOOK_POST_ON_PROGRESS = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/on-progress";
+const N8N_WEBHOOK_POST_ON_PROGRESS = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan";
 
 export default function AdminPage() {
     const [reports, setReports] = useState<Report[]>([]);
