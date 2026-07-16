@@ -3,9 +3,10 @@ export interface Report {
     Latitude: number;
     Longitude: number;
     Deskripsi: string;
-    Status: "PENDING" | "RESOLVED";
+    Status: "PENDING" | "ON_PROGRESS" | "RESOLVED";
     Foto_Lapor: string;
     Foto_Perbaikan?: string;
+    CreatedAt: string;
 }
 
 export interface Location {

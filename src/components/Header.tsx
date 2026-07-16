@@ -6,18 +6,19 @@ interface HeaderProps {
     setSearchQuery: (query: string) => void;
     handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
     isSearching: boolean;
+    onLogoClick: () => void;
 }
 
-export default function Header({ searchQuery, setSearchQuery, handleSearch, isSearching }: HeaderProps) {
+export default function Header({ searchQuery, setSearchQuery, handleSearch, isSearching, onLogoClick }: HeaderProps) {
     return (
         <header className="bg-white shadow-sm sticky top-0 z-50">
             <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div className="flex items-center gap-2">
-                    <AlertCircle className="text-red-500 w-8 h-8" />
+                <button onClick={onLogoClick} className="flex items-center gap-2 group text-left">
+                    <AlertCircle className="text-red-500 w-8 h-8 group-hover:scale-110 transition-transform" />
                     <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-red-600 to-orange-500">
                         LaporJalan.id
                     </h1>
-                </div>
+                </button>
 
                 <form onSubmit={handleSearch} className="flex w-full md:w-96 relative">
                     <input

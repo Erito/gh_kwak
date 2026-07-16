@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 
 // Komponen
 import Header from "./components/Header";
 import MapComponent from "./components/MapComponent";
 import ReportForm from "./components/ReportForm";
+import AdminDashboard from "./components/AdminDashboard";
 
 // Types
 import type { Report, Location, FormDataState, NominatimResponse } from "./types";
@@ -12,6 +14,7 @@ import type { Report, Location, FormDataState, NominatimResponse } from "./types
 const IMGBB_API_KEY = "eb35e048c700026796fb17f3edfb4d43";
 const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
 const N8N_WEBHOOK_POST_LAPOR = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/lapor";
+const N8N_WEBHOOK_POST_ON_PROGRESS = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/on-progress";
 const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan";
 
 export default function App() {
@@ -24,6 +27,9 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [mapCenter, setMapCenter] = useState<[number, number]>([-6.2574, 106.6183]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+
+  // State Admin Dashboard
+  const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState<boolean>(false);
 
   const fetchReports = async () => {
     try {
@@ -111,6 +117,27 @@ export default function App() {
     setLoading(false);
   };
 
+  const handleAdminUpdateProgress = async (id: string | number) => {
+    setLoading(true);
+    try {
+      const res = await fetch(N8N_WEBHOOK_POST_ON_PROGRESS, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      if (res.ok) {
+        alert("Status berhasil diupdate menjadi 'On Progress'!");
+        fetchReports();
+      } else {
+        alert("Gagal mengupdate status.");
+      }
+    } catch (err) {
+      alert("Terjadi kesalahan sistem.");
+    }
+    setLoading(false);
+  };
+
   // Diubah: Menerima adminFile langsung dari MapComponent
   const handleAdminUpdate = async (id: string | number, file: File) => {
     setLoading(true);
@@ -141,28 +168,40 @@ export default function App() {
         setSearchQuery={setSearchQuery}
         handleSearch={handleSearch}
         isSearching={isSearching}
+        onLogoClick={() => setIsAdminDashboardOpen(true)}
       />
+
+      <AnimatePresence>
+        {isAdminDashboardOpen && (
+          <AdminDashboard
+            reports={reports}
+            onClose={() => setIsAdminDashboardOpen(false)}
+            onUpdateProgress={handleAdminUpdateProgress}
+            loading={loading}
+          />
+        )}
+      </AnimatePresence>
 
       <main className="max-w-6xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
+          <>
+            <MapComponent
+              mapCenter={mapCenter}
+              reports={reports}
+              newLocation={newLocation}
+              setNewLocation={setNewLocation}
+              handleAdminUpdate={handleAdminUpdate}
+              loading={loading}
+            />
 
-          <MapComponent
-            mapCenter={mapCenter}
-            reports={reports}
-            newLocation={newLocation}
-            setNewLocation={setNewLocation}
-            handleAdminUpdate={handleAdminUpdate}
-            loading={loading}
-          />
-
-          <ReportForm
-            newLocation={newLocation}
-            form={form}
-            setForm={setForm}
-            handleLapor={handleLapor}
-            loading={loading}
-          />
-
+            <ReportForm
+              newLocation={newLocation}
+              form={form}
+              setForm={setForm}
+              handleLapor={handleLapor}
+              loading={loading}
+            />
+          </>
         </div>
       </main>
     </div>
