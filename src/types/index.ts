@@ -13,7 +13,7 @@ export interface Report {
     Level_Urgensi?: string;
     Analisis_AI?: string;
 }
-
+//tes
 export interface Location {
     lat: number;
     lng: number;
