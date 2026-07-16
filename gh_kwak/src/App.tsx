@@ -224,7 +224,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
             <AlertCircle className="text-red-500 w-8 h-8" />
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-orange-500">
+            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-red-600 to-orange-500">
               LaporJalan.id
             </h1>
           </div>
@@ -250,7 +250,7 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
           
           {/* Peta Section */}
-          <div className="lg:col-span-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100 h-[600px] z-0">
+          <div className="lg:col-span-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100 h-150 z-0">
             <MapContainer center={mapCenter} zoom={13} className="h-full w-full rounded-xl" zoomControl={false}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <MapController center={mapCenter} />
@@ -259,7 +259,7 @@ export default function App() {
               {reports.map((r, idx) => (
                 <Marker key={idx} position={[r.Latitude, r.Longitude]} icon={r.Status === "RESOLVED" ? greenIcon : redIcon}>
                   <Popup className="custom-popup">
-                    <div className="p-1 min-w-[200px]">
+                    <div className="p-1 min-w-50">
                       <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold mb-2 ${r.Status === "RESOLVED" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
                         {r.Status === "RESOLVED" ? <CheckCircle2 className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
                         {r.Status}
@@ -355,13 +355,13 @@ export default function App() {
                       </label>
                     </div>
 
-                    <button type="submit" disabled={loading} className="w-full mt-2 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold py-3 rounded-lg shadow-md transition-all disabled:opacity-50">
+                    <button type="submit" disabled={loading} className="w-full mt-2 bg-linear-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold py-3 rounded-lg shadow-md transition-all disabled:opacity-50">
                       {loading ? "AI Sedang Menganalisis..." : "Kirim Laporan Sekarang"}
                     </button>
                   </form>
                 </motion.div>
               ) : (
-                <div className="bg-slate-100 border-2 border-dashed border-slate-300 rounded-2xl h-[600px] flex flex-col items-center justify-center p-8 text-center text-slate-500">
+                <div className="bg-slate-100 border-2 border-dashed border-slate-300 rounded-2xl h-150 flex flex-col items-center justify-center p-8 text-center text-slate-500">
                   <MapPin className="w-12 h-12 mb-4 text-slate-300" />
                   <h3 className="text-lg font-bold text-slate-700 mb-2">Pilih Titik di Peta</h3>
                   <p className="text-sm">Klik pada area jalan yang rusak di peta untuk mulai membuat laporan baru.</p>
