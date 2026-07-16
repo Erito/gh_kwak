@@ -8,7 +8,7 @@ export interface Report {
     Foto_Perbaikan?: string;
     CreatedAt: string;
 }
-
+//tes
 export interface Location {
     lat: number;
     lng: number;
