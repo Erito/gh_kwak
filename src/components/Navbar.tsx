@@ -14,9 +14,11 @@ export default function Navbar({ searchQuery, setSearchQuery, handleSearch }: Na
     return (
         <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-6xl px-4">
             <div className="bg-white rounded-full shadow-lg pr-4 pl-6 py-3 flex items-center justify-between w-full">
-                <Link to="/" className="flex items-center gap-2 text-2xl font-black tracking-tighter">
-                    <span className="bg-slate-800 text-white px-2 py-1 rounded-tl-lg rounded-br-lg">R</span>
-                    <span className="text-slate-400">J</span>
+                
+                {/* Logo Asli (Mengambil dari folder public/assets) */}
+                <Link to="/" className="flex items-center">
+                    {/* Kamu bisa ganti logo-only-black.svg menjadi logo-full-black.svg jika ingin ada teksnya */}
+                    <img src="/assets/logo/logo-only-black.svg" alt="Logo" className="h-8 md:h-9" />
                 </Link>
 
                 {/* Nav Links */}
@@ -27,17 +29,18 @@ export default function Navbar({ searchQuery, setSearchQuery, handleSearch }: Na
                     <Link to="/admin" className={location.pathname === "/admin" ? "text-red-500" : "text-red-400 hover:text-red-500"}>Admin</Link>
                 </div>
 
-                <form
+                {/* Search Bar Kuning */}
+                <form 
                     onSubmit={(e) => {
                         if (handleSearch) handleSearch(e);
                         else e.preventDefault();
-                    }}
+                    }} 
                     className="flex items-center bg-[#fef0c7] rounded-full px-4 py-2.5 w-64 transition-all focus-within:ring-2 focus-within:ring-yellow-400"
                 >
-                    <Search className="text-slate-600 w-4 h-4 mr-2" />
-                    <input
-                        type="text"
-                        placeholder="search location..."
+                    <Search className="text-slate-600 w-4 h-4 mr-2 shrink-0" />
+                    <input 
+                        type="text" 
+                        placeholder="search location..." 
                         value={searchQuery || ""}
                         onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
                         className="bg-transparent border-none outline-none text-sm w-full text-slate-800 placeholder-slate-500"
