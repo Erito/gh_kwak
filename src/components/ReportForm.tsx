@@ -14,9 +14,10 @@ interface ReportFormProps {
 export default function ReportForm({ newLocation, form, setForm, handleLapor, loading }: ReportFormProps) {
     return (
         <div className="lg:col-span-1">
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
                 {newLocation ? (
                     <motion.div
+                        key="form-active"
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
                         className="bg-white p-6 rounded-2xl shadow-xl border border-red-100 sticky top-24"
                     >
@@ -70,11 +71,17 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                         </form>
                     </motion.div>
                 ) : (
-                    <div className="bg-slate-100 border-2 border-dashed border-slate-300 rounded-2xl h-150 flex flex-col items-center justify-center p-8 text-center text-slate-500">
+                    <motion.div
+                        key="form-placeholder"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="bg-slate-100 border-2 border-dashed border-slate-300 rounded-2xl h-150 flex flex-col items-center justify-center p-8 text-center text-slate-500"
+                    >
                         <MapPin className="w-12 h-12 mb-4 text-slate-300" />
                         <h3 className="text-lg font-bold text-slate-700 mb-2">Pilih Titik di Peta</h3>
                         <p className="text-sm">Klik pada area jalan yang rusak di peta untuk mulai membuat laporan baru.</p>
-                    </div>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </div>
