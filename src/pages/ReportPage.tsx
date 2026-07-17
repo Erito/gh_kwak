@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import MapComponent from "../components/MapComponent";
 import ReportForm from "../components/ReportForm";
@@ -20,6 +21,8 @@ export default function ReportPage() {
     const [pageLoading, setPageLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [mapCenter, setMapCenter] = useState<[number, number]>([-6.2574, 106.6183]);
+    const [showReturnHome, setShowReturnHome] = useState<boolean>(false);
+    const navigate = useNavigate();
     // Mobile: toggle between map and form
     const [mobileView, setMobileView] = useState<"map" | "form">("map");
 
@@ -79,7 +82,16 @@ export default function ReportPage() {
             toast.error("Pilih lokasi di peta dan unggah foto bukti.");
             return;
         }
+        if (!window.confirm("Apakah data yang kamu isi benar?")) {
+            toast.error("Pengiriman laporan dibatalkan.");
+            return;
+        }
+        if (!window.confirm("Apakah data yang kamu isi benar?")) {
+            toast.error("Pengiriman laporan dibatalkan.");
+            return;
+        }
         setLoading(true);
+        setShowReturnHome(false);
         const toastId = toast.loading("Mengirim laporan dan menganalisis gambar...");
         try {
             const foto_url = await uploadToImgBB(form.file);
@@ -97,6 +109,7 @@ export default function ReportPage() {
                 toast.success("Berhasil! Laporan Anda telah diterima.", { id: toastId });
                 setNewLocation(null);
                 setForm({ deskripsi: "", file: null });
+                setShowReturnHome(true);
                 fetchReports();
             } else {
                 toast.error("Laporan ditolak. AI mendeteksi gambar bukan jalan rusak.", { id: toastId });
@@ -132,7 +145,12 @@ export default function ReportPage() {
     // When user picks location on map, auto-switch to form on mobile
     const handleSetNewLocation = (loc: Location | null) => {
         setNewLocation(loc);
+        setShowReturnHome(false);
         if (loc) setMobileView("form");
+    };
+
+    const handleReturnHome = () => {
+        navigate("/");
     };
 
     return (
@@ -196,6 +214,18 @@ export default function ReportPage() {
                         </div>
                         {/* Form - hidden on mobile when map view is active */}
                         <div className={`lg:block lg:col-span-1 ${mobileView === "form" ? "block" : "hidden"}`}>
+                            {showReturnHome && (
+                                <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900 shadow-sm">
+                                    <p className="font-semibold mb-2">Laporan berhasil dikirim.</p>
+                                    <button
+                                        type="button"
+                                        onClick={handleReturnHome}
+                                        className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-700"
+                                    >
+                                        Kembali ke Halaman Utama
+                                    </button>
+                                </div>
+                            )}
                             <ReportForm newLocation={newLocation} form={form} setForm={setForm} handleLapor={handleLapor} loading={loading} />
                         </div>
                     </div>
