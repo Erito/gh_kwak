@@ -10,12 +10,12 @@ export default function Heroes() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen bg-slate-50 rounded-br-[120px] overflow-hidden shadow-[0_0_15px_10px_rgba(0,0,0,0.3)]"
+            className="md:h-full rounded-br-[120px] overflow-hidden shadow-[0_0_15px_10px_rgba(0,0,0,0.3)]"
         >
             <Navbar />
 
             {/* ── HERO ── full-bleed map with yellow panel on top */}
-            <section className="relative pt-16 sm:pt-20 h-screen md:h-screen rounded-br-[120px] bg-[#45474B] overflow-hidden">
+            <section className="relative h-[80vh] md:h-screen rounded-br-[120px] bg-[#45474B] overflow-hidden">
 
                 {/* Map — fills the entire section */}
                 <div className="absolute inset-0 z-0 bg-[#45474B] overflow-hidden">
@@ -47,11 +47,11 @@ export default function Heroes() {
                                bg-[#F5C800] rounded-br-[120px]
                                flex flex-col justify-between
                                px-7 md:px-9
-                                mr-20 pb-20
+                                r-20 pb-20
                                shadow-[0_0_15px_10px_rgba(0,0,0,0.3)]"
                 >
                     {/* Logo mark + headline */}
-                    <div className="flex flex-row gap-3 mt-40 items-center">
+                    <div className="flex flex-row gap-3 mt-28 md:mt-40 items-center">
                         <div className="">
                             <img src={logo} alt="Logo" className="w-20 h-20 md:w-32 md:h-32" />
                         </div>
@@ -81,7 +81,7 @@ export default function Heroes() {
                     </div>
 
                     {/* Feature list */}
-                    <ul className="mt-8 flex flex-col gap-12 pl-10 relative">
+                    <ul className="flex flex-col gap-12 pl-10 relative">
                         {/* Absolute dashed line running through all bollards */}
                         <div
                             className="absolute left-15 top-8 bottom-8 w-[2px]"
