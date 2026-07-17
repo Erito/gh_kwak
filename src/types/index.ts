@@ -5,7 +5,7 @@ export interface Report {
     Latitude: number;
     Longitude: number;
     Foto_Lapor: string;
-    Status: "PENDING" | "ON_PROGRESS" | "RESOLVED";
+    Status: "PENDING" | "RESOLVED";
     Foto_Perbaikan?: string;
     Dibuat_Pada: string;
     Selesai_Pada?: string;
@@ -14,6 +14,7 @@ export interface Report {
     Analisis_AI?: string;
     Kota_Kabupaten?: string;
     Instansi_Pelaksanaan?: string;
+    Telp_Pelapor?: string;
 }
 //tes
 export interface Location {
@@ -24,6 +25,8 @@ export interface Location {
 export interface FormDataState {
     deskripsi: string;
     file: File | null;
+    namaPelapor: string; 
+    telpPelapor: string; 
 }
 
 export interface NominatimResponse {

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { X, MapPin, AlertTriangle, Map, UploadCloud } from "lucide-react";
+import { X, MapPin, AlertTriangle, Map, UploadCloud, CheckCircle, Clock, User } from "lucide-react";
 import type { Report } from "../types";
 
 interface AdminDashboardProps {
     reports: Report[];
     onClose: () => void;
-    // onUpdateProgress dihapus karena alur diubah
     onResolve: (id: string | number, instansi: string, file: File) => void;
     loading: boolean;
 }
@@ -16,10 +15,22 @@ const StatusBadge = ({ status }: { status: string | undefined }) => {
     const isResolved = safeStatus === "RESOLVED";
     
     return (
-        <span className={`px-2 py-1 text-[10px] font-bold rounded-md ${
-            isResolved ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+        <span className={`inline-flex items-center gap-2 px-4 py-1.5 text-sm font-semibold rounded-full border ${
+            isResolved 
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                : "bg-amber-50 text-amber-700 border-amber-200"
         }`}>
-            {isResolved ? "SELESAI" : "PENDING"}
+            {isResolved ? (
+                <>
+                    <CheckCircle className="w-4 h-4" />
+                    Selesai
+                </>
+            ) : (
+                <>
+                    <Clock className="w-4 h-4" />
+                    Pending
+                </>
+            )}
         </span>
     );
 };
@@ -32,7 +43,6 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
         return timeB - timeA;
     });
 
-    // State untuk mengontrol Modal Form Penyelesaian
     const [resolvingId, setResolvingId] = useState<string | number | null>(null);
     const [instansi, setInstansi] = useState("");
     const [resolveFile, setResolveFile] = useState<File | null>(null);
@@ -52,135 +62,281 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-100 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={onClose}
         >
             <motion.div
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 50, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="bg-slate-50 rounded-2xl shadow-2xl w-full max-w-7xl h-[90vh] flex flex-col relative overflow-hidden"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white border border-slate-100 rounded-2xl shadow-xl w-full max-w-7xl h-[90vh] flex flex-col relative overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                <header className="p-4 border-b border-slate-200 flex justify-between items-center shrink-0 bg-white">
-                    <h2 className="text-xl font-bold text-slate-800">Admin Dashboard</h2>
-                    <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 transition-colors">
-                        <X className="w-5 h-5 text-slate-600"/>
-                    </button>
+                {/* Header Utama dengan aksen strip kuning tipis di atasnya */}
+                <div className="h-1.5 w-full bg-amber-400 shrink-0" />
+                <header className="px-6 py-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shrink-0 bg-white relative">
+                    {/* Kiri: Info Utama */}
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0 shadow-sm">
+                            <Map className="w-6 h-6 text-amber-600" />
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h2 className="text-xl font-extrabold text-slate-900 tracking-tight sm:text-2xl">
+                                    Admin Dashboard
+                                </h2>
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                                    Sistem Pantau
+                                </span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-medium">
+                                Kelola dan verifikasi laporan infrastruktur jalan dari warga.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Kanan: Ringkasan Status & Tombol Aksi */}
+                    <div className="flex items-center justify-between sm:justify-end gap-6">
+                        {/* Ringkasan Statistik */}
+                        <div className="flex items-center gap-4 border-l border-slate-200 pl-4 hidden sm:flex">
+                            <div className="text-left">
+                                <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Laporan</p>
+                                <p className="text-lg font-bold text-slate-800 font-mono leading-tight">
+                                    {sortedReports.length}
+                                </p>
+                            </div>
+                            <div className="text-left">
+                                <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Selesai</p>
+                                <p className="text-lg font-bold text-emerald-600 font-mono leading-tight">
+                                    {sortedReports.filter(r => String(r.Status).toUpperCase() === "RESOLVED").length}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Tombol Close */}
+                        <button 
+                            onClick={onClose} 
+                            className="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-100 hover:border-rose-100 text-slate-400 hover:text-rose-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+                            aria-label="Close dashboard"
+                        >
+                            <X className="w-5 h-5"/>
+                        </button>
+                    </div>
                 </header>
 
-                <div className="grow overflow-y-auto">
+                {/* Konten Utama */}
+                <div className="grow overflow-y-auto bg-slate-50/50">
                     {sortedReports.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-full text-slate-500">
-                            <AlertTriangle className="w-12 h-12 mb-3 text-slate-300"/>
-                            <p className="font-medium text-lg">Belum ada data laporan</p>
+                        <div className="flex flex-col items-center justify-center h-full text-slate-400 p-8">
+                            <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mb-4 border border-amber-100">
+                                <AlertTriangle className="w-9 h-9 text-amber-500"/>
+                            </div>
+                            <p className="text-lg font-semibold text-slate-700">Belum Ada Data Laporan</p>
+                            <p className="text-sm text-slate-400 mt-1 max-w-sm text-center">Semua laporan dari warga yang masuk akan ditampilkan di sini.</p>
                         </div>
                     ) : (
-                        <table className="w-full text-sm text-left text-slate-600">
-                            <thead className="text-xs text-slate-700 uppercase bg-slate-100 sticky top-0 z-10 shadow-sm">
-                                <tr>
-                                    <th className="px-4 py-3">ID Laporan</th>
-                                    <th className="px-4 py-3">Detail Laporan</th>
-                                    <th className="px-4 py-3">Lokasi</th>
-                                    <th className="px-4 py-3 text-center">Status</th>
-                                    <th className="px-4 py-3 text-center">Aksi Admin</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div className="w-full overflow-x-auto">
+                            {/* Tampilan Desktop Table View */}
+                            <table className="hidden md:table w-full text-base text-left text-slate-600 border-collapse">
+                                <thead className="text-sm text-slate-500 font-semibold uppercase bg-white border-b border-slate-100 sticky top-0 z-10">
+                                    <tr>
+                                        <th className="px-6 py-4">ID Laporan</th>
+                                        <th className="px-6 py-4">Identitas Pelapor</th>
+                                        <th className="px-6 py-4">Detail Kerusakan</th>
+                                        <th className="px-6 py-4">Lokasi Wilayah</th>
+                                        <th className="px-6 py-4 text-center">Status</th>
+                                        <th className="px-6 py-4 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100 bg-white">
+                                    {sortedReports.map((report, idx) => (
+                                        <tr key={report.ID_Laporan || idx} className="hover:bg-slate-50/70 transition-colors">
+                                            <td className="px-6 py-4 font-mono text-sm font-semibold text-slate-500">
+                                                #{String(report.ID_Laporan || "-").slice(0, 8)}
+                                            </td>
+                                            {/* Kolom Identitas Pelapor Baru (Desktop) */}
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                                                        <User className="w-4 h-4" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-semibold text-slate-900 leading-tight">
+                                                            {report.Nama_Pelapor || "Anonim"}
+                                                        </p>
+                                                        <p className="text-xs text-slate-400 font-medium mt-0.5">
+                                                            {report.Telp_Pelapor || "-"}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 max-w-md">
+                                                <p className="font-medium text-slate-900 leading-relaxed line-clamp-2">{report.Deskripsi}</p>
+                                                {report.Instansi_Pelaksanaan && (
+                                                    <span className="inline-block text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded mt-2 border border-slate-200">
+                                                        Pelaksana: {report.Instansi_Pelaksanaan}
+                                                    </span>
+                                                )}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="space-y-1.5">
+                                                    {report.Kota_Kabupaten && (
+                                                        <div className="flex items-center gap-1.5 text-slate-900 font-semibold">
+                                                            <Map className="w-4 h-4 text-amber-500 shrink-0"/>
+                                                            <span className="text-sm">{report.Kota_Kabupaten}</span>
+                                                        </div>
+                                                    )}
+                                                    <div className="flex items-center gap-1.5 text-slate-400">
+                                                        <MapPin className="w-4 h-4 shrink-0"/>
+                                                        <span className="text-xs">{Number(report.Latitude || 0).toFixed(5)}, {Number(report.Longitude || 0).toFixed(5)}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-center whitespace-nowrap">
+                                                <StatusBadge status={report.Status}/>
+                                            </td>
+                                            <td className="px-6 py-4 text-right whitespace-nowrap">
+                                                {String(report.Status).toUpperCase() !== "RESOLVED" ? (
+                                                    <button
+                                                        onClick={() => report.ID_Laporan && setResolvingId(report.ID_Laporan)}
+                                                        disabled={loading}
+                                                        className="font-bold text-sm bg-amber-400 hover:bg-amber-500 text-slate-900 px-5 py-2.5 rounded-xl transition-all duration-200 disabled:opacity-50 shadow-sm shadow-amber-400/10"
+                                                    >
+                                                        Tandai Selesai
+                                                    </button>
+                                                ) : (
+                                                    <span className="inline-flex text-sm text-emerald-600 font-semibold bg-emerald-50 px-4 py-2.5 rounded-xl border border-emerald-100">
+                                                        Tuntas ✓
+                                                    </span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+
+                            {/* Tampilan Mobile List View */}
+                            <div className="md:hidden divide-y divide-slate-100 bg-white">
                                 {sortedReports.map((report, idx) => (
-                                    <tr key={report.ID_Laporan || idx} className="bg-white border-b hover:bg-slate-50">
-                                        <td className="px-4 py-4 font-mono text-[11px] font-bold text-slate-800">
-                                            #{String(report.ID_Laporan || "-").slice(0, 8)}
-                                        </td>
-                                        <td className="px-4 py-4 max-w-62.5">
-                                            <p className="font-medium truncate mb-1">{report.Deskripsi}</p>
+                                    <div key={report.ID_Laporan || idx} className="p-5 space-y-4">
+                                        <div className="flex justify-between items-center">
+                                            <span className="font-mono text-sm font-semibold text-slate-400">
+                                                #{String(report.ID_Laporan || "-").slice(0, 8)}
+                                            </span>
+                                            <StatusBadge status={report.Status}/>
+                                        </div>
+
+                                        {/* Info Pelapor untuk Tampilan Mobile */}
+                                        <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                            <p className="text-xs text-slate-600 font-medium">
+                                                Pelapor: <span className="font-bold text-slate-800">{report.Nama_Pelapor || "Anonim"}</span> ({report.Telp_Pelapor || "-"})
+                                            </p>
+                                        </div>
+
+                                        <div className="space-y-1.5">
+                                            <p className="text-base font-medium text-slate-900 leading-normal">{report.Deskripsi}</p>
                                             {report.Instansi_Pelaksanaan && (
-                                                <p className="text-[10px] text-slate-500 bg-green-50 p-1.5 rounded inline-block mt-1 border border-green-100">
-                                                    <span className="font-bold text-green-700">Dikerjakan oleh: </span>{report.Instansi_Pelaksanaan}
+                                                <p className="text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded inline-block border border-slate-200 mt-1.5">
+                                                    Pelaksana: {report.Instansi_Pelaksanaan}
                                                 </p>
                                             )}
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="flex flex-col gap-1">
-                                                {report.Kota_Kabupaten && (
-                                                    <div className="flex items-center gap-1 text-slate-800 font-bold">
-                                                        <Map className="w-3 h-3 text-blue-500"/>
-                                                        <span className="text-[11px]">{report.Kota_Kabupaten}</span>
-                                                    </div>
-                                                )}
-                                                <div className="flex items-center gap-1 text-slate-500">
-                                                    <MapPin className="w-3 h-3"/>
-                                                    <span className="text-[10px]">{Number(report.Latitude || 0).toFixed(4)}, {Number(report.Longitude || 0).toFixed(4)}</span>
+                                        </div>
+
+                                        <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-sm text-slate-500">
+                                            {report.Kota_Kabupaten && (
+                                                <div className="flex items-center gap-1.5 text-slate-800 font-semibold">
+                                                    <Map className="w-4 h-4 text-amber-500 shrink-0"/>
+                                                    <span>{report.Kota_Kabupaten}</span>
                                                 </div>
+                                            )}
+                                            <div className="flex items-center gap-1.5">
+                                                <MapPin className="w-4 h-4 shrink-0"/>
+                                                <span>{Number(report.Latitude || 0).toFixed(4)}, {Number(report.Longitude || 0).toFixed(4)}</span>
                                             </div>
-                                        </td>
-                                        <td className="px-4 py-4 text-center">
-                                            <StatusBadge status={report.Status}/>
-                                        </td>
-                                        <td className="px-4 py-4 text-center">
-                                            {/* Logic Baru: Jika bukan RESOLVED, langsung munculkan tombol LAPOR SELESAI */}
+                                        </div>
+
+                                        <div className="pt-1">
                                             {String(report.Status).toUpperCase() !== "RESOLVED" ? (
                                                 <button
                                                     onClick={() => report.ID_Laporan && setResolvingId(report.ID_Laporan)}
                                                     disabled={loading}
-                                                    className="font-bold text-[10px] bg-green-100 text-green-700 border border-green-300 hover:bg-green-200 px-4 py-2 rounded-lg transition-colors disabled:opacity-50 shadow-sm"
+                                                    className="w-full text-center font-bold text-sm bg-amber-400 hover:bg-amber-500 text-slate-900 py-3.5 rounded-xl transition-all duration-200 disabled:opacity-50"
                                                 >
-                                                    LAPOR SELESAI
+                                                    Tandai Laporan Selesai
                                                 </button>
                                             ) : (
-                                                <span className="text-xs text-green-500 font-bold flex items-center justify-center gap-1 bg-green-50 py-1.5 rounded-lg border border-green-100">
-                                                    Tuntas ✓
+                                                <span className="w-full text-center text-sm text-emerald-600 font-semibold flex items-center justify-center gap-1.5 bg-emerald-50 py-3 rounded-xl border border-emerald-100">
+                                                    Tuntas Baik ✓
                                                 </span>
                                             )}
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </div>
                                 ))}
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
                     )}
                 </div>
 
-                {/* MODAL FORM PENYELESAIAN */}
+                {/* MODAL MODERASI / FORM PENYELESAIAN */}
                 {resolvingId && (
-                    <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                        <form onSubmit={handleResolveSubmit} className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md border border-slate-200">
-                            <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                <UploadCloud className="text-green-500 w-5 h-5"/> Bukti Perbaikan
-                            </h3>
+                    <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm z-30 flex items-center justify-center p-4">
+                        <motion.form 
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            onSubmit={handleResolveSubmit} 
+                            className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg border border-slate-100 space-y-5"
+                        >
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                                    <UploadCloud className="text-amber-500 w-6 h-6"/> Dokumen Penyelesaian
+                                </h3>
+                                <p className="text-sm text-slate-400 mt-1">Lengkapi lampiran verifikasi untuk menutup berkas laporan ini.</p>
+                            </div>
                             
-                            <div className="mb-4">
-                                <label className="block text-xs font-bold text-slate-600 mb-1">Instansi Pelaksanaan</label>
+                            <div className="space-y-1.5">
+                                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Instansi Pelaksana</label>
                                 <input 
                                     type="text" 
                                     required
-                                    placeholder="Contoh: Dinas PUPR Tangerang"
+                                    placeholder="Misal: Dinas PUPR Kota Tangerang"
                                     value={instansi}
                                     onChange={(e) => setInstansi(e.target.value)}
-                                    className="w-full border border-slate-300 rounded-lg p-2 text-sm focus:outline-none focus:border-green-500"
+                                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 bg-slate-50 transition-all"
                                 />
                             </div>
 
-                            <div className="mb-6">
-                                <label className="block text-xs font-bold text-slate-600 mb-1">Foto Bukti Perbaikan</label>
-                                <input 
-                                    type="file" 
-                                    required
-                                    accept="image/*"
-                                    onChange={(e) => setResolveFile(e.target.files ? e.target.files[0] : null)}
-                                    className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-                                />
+                            <div className="space-y-1.5">
+                                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Foto Hasil Perbaikan</label>
+                                <div className="border border-dashed border-slate-200 bg-slate-50 rounded-xl p-4 text-center hover:bg-slate-100/50 transition-colors relative">
+                                    <input 
+                                        type="file" 
+                                        required
+                                        accept="image/*"
+                                        onChange={(e) => setResolveFile(e.target.files ? e.target.files[0] : null)}
+                                        className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-400 file:text-slate-900 hover:file:bg-amber-500 cursor-pointer"
+                                    />
+                                </div>
                             </div>
 
-                            <div className="flex gap-3">
-                                <button type="button" onClick={() => setResolvingId(null)} className="flex-1 py-2 rounded-lg text-slate-600 font-bold bg-slate-100 hover:bg-slate-200 text-sm">
+                            <div className="flex gap-4 pt-2">
+                                <button 
+                                    type="button" 
+                                    onClick={() => setResolvingId(null)} 
+                                    className="flex-1 py-3 rounded-xl text-slate-700 font-bold bg-slate-100 hover:bg-slate-200 text-base transition-colors"
+                                >
                                     Batal
                                 </button>
-                                <button type="submit" disabled={loading} className="flex-1 py-2 rounded-lg text-white font-bold bg-green-600 hover:bg-green-700 text-sm disabled:opacity-50">
+                                <button 
+                                    type="submit" 
+                                    disabled={loading} 
+                                    className="flex-1 py-3 rounded-xl text-slate-900 font-bold bg-amber-400 hover:bg-amber-500 text-base disabled:opacity-50 transition-all shadow-sm shadow-amber-400/10"
+                                >
                                     {loading ? "Mengirim..." : "Kirim Bukti"}
                                 </button>
                             </div>
-                        </form>
+                        </motion.form>
                     </div>
                 )}
             </motion.div>

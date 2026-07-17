@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { MapPin, Edit3, CheckCircle2, MousePointerClick } from "lucide-react";
 
 const steps = [
@@ -7,25 +6,39 @@ const steps = [
         icon: MousePointerClick,
         title: "Mulai Laporan",
         description: "Klik tombol 'Report' di navigasi untuk memulai proses pelaporan kerusakan jalan.",
-        bgColor: "bg-slate-200",
-        titleColor: "text-emerald-800",
+        bgColor: "bg-white",
+        titleColor: "text-slate-900",
+        descColor: "text-slate-600",
+        iconWrapper: "bg-emerald-100",
         iconColor: "text-emerald-600",
+        stepColor: "text-emerald-500",
+        step: "01",
     },
     {
         icon: MapPin,
         title: "Tandai Lokasi",
         description: "Pilih lokasi jalan rusak secara akurat di peta interaktif kami, baik dengan klik atau pencarian.",
-        bgColor: "bg-emerald-200",
-        titleColor: "text-emerald-800",
+        // Background dibuat agak hijau agar beda dari Step 1
+        bgColor: "bg-emerald-50", 
+        titleColor: "text-slate-900",
+        descColor: "text-slate-600",
+        // Icon wrapper diubah jadi putih agar kontras dengan background emerald-50
+        iconWrapper: "bg-white", 
         iconColor: "text-emerald-600",
+        stepColor: "text-emerald-600",
+        step: "02",
     },
     {
         icon: Edit3,
         title: "Isi Detail Laporan",
         description: "Lengkapi laporan dengan deskripsi singkat dan unggah foto kerusakan untuk dianalisis oleh AI.",
-        bgColor: "bg-emerald-300",
-        titleColor: "text-emerald-900",
-        iconColor: "text-emerald-700",
+        bgColor: "bg-emerald-600", 
+        titleColor: "text-white",
+        descColor: "text-emerald-50",
+        iconWrapper: "bg-white",
+        iconColor: "text-emerald-600",
+        stepColor: "text-emerald-200",
+        step: "03",
     },
 ];
 
@@ -33,66 +46,70 @@ const finalStep = {
     icon: CheckCircle2,
     title: "Kirim & Pantau",
     description: "Laporan Anda akan langsung diterima oleh dinas terkait. Pantau progres perbaikan secara transparan.",
-    bgColor: "bg-yellow-400",
-    iconColor: "text-white",
+    bgColor: "bg-amber-400", 
+    titleColor: "text-slate-900",
+    descColor: "text-slate-800",
+    iconWrapper: "bg-slate-900",
+    iconColor: "text-amber-400",
+    stepColor: "text-slate-900",
+    step: "04",
 };
 
-export default function Information() {
-    const targetRef = useRef<HTMLDivElement | null>(null);
-    const { scrollYProgress } = useScroll({
-        target: targetRef,
-        offset: ["start start", "end end"],
-    });
+const allSteps = [...steps, finalStep];
 
-    // Membuat efek scroll horizontal untuk kartu
-    const x = useTransform(scrollYProgress, [0, 0.8], ["0%", "-66.66%"]);
-    // Menganimasikan progress bar
-    const scaleX = useTransform(scrollYProgress, [0, 0.9], [0, 1]);
-    // Memunculkan pesan terakhir dengan fade-in
-    const finalTextOpacity = useTransform(scrollYProgress, [0.9, 1], [0, 1]);
+export default function Information() {
+    const cardVariants: Variants = {
+        offscreen: {
+            x: 150, 
+            opacity: 0,
+        },
+        onscreen: {
+            x: 0, 
+            opacity: 1,
+            transition: {
+                type: "spring",
+                bounce: 0.3,
+                duration: 0.9,
+            },
+        },
+    };
 
     return (
-        <section ref={targetRef} className="relative h-[300vh] bg-slate-50 text-slate-800">
-            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-                <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full max-w-6xl px-4 z-20">
-                    <h2 className="text-4xl md:text-5xl mt-5 font-bold text-center text-slate-900">
-                        Lapor Kerusakan, Semudah <span className="text-emerald-500">1-2-3</span>
-                    </h2>
-                    <p className="text-center text-gray-700 mt-2">Proses pelaporan yang dirancang untuk kecepatan dan kemudahan.</p>
-                </div>
+        <section className="relative bg-slate-100 text-slate-800 py-20 md:py-28 overflow-hidden">
+            <div className="max-w-3xl mx-auto px-4">
+                <h2 className="text-3xl md:text-5xl font-bold text-center text-slate-900 mb-3">
+                    Lapor Kerusakan <span className="text-emerald-600">Semudah itu</span>
+                </h2>
+                <p className="text-center text-gray-600 text-base md:text-lg mb-16 md:mb-24">
+                    Proses pelaporan yang dirancang untuk kecepatan dan kemudahan.
+                </p>
 
-                {/* Kartu yang bisa scroll horizontal */}
-                <motion.div style={{ x }} className="flex absolute left-0 top-0 h-full">
-                    {steps.map((step, index) => (
-                        <div key={index} className="w-screen h-screen flex items-center justify-center p-8">
-                            <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-8 text-center shadow-2xl">
-                                <div className={`w-20 h-20 ${step.bgColor} rounded-full mx-auto flex items-center justify-center mb-6 shadow-lg`}>
-                                    <step.icon className={`w-10 h-10 ${step.iconColor}`} />
-                                </div>
-                                <h3 className={`text-3xl font-bold ${step.titleColor} mb-2`}>{step.title}</h3>
-                                <p className="text-slate-500">{step.description}</p>
+                <div className="flex flex-col gap-8 md:gap-12">
+                    {allSteps.map((step, index) => (
+                        <motion.div
+                            key={index}
+                            className={`${step.bgColor} rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-start gap-6 shadow-xl border border-black/5`}
+                            initial="offscreen"
+                            whileInView="onscreen"
+                            viewport={{ once: true, amount: 0.4 }}
+                            variants={cardVariants}
+                        >
+                            <div className={`w-16 h-16 ${step.iconWrapper} rounded-full flex items-center justify-center shrink-0 shadow-md`}>
+                                <step.icon className={`w-8 h-8 ${step.iconColor}`} />
                             </div>
-                        </div>
+                            <div className="flex-1">
+                                <span className={`text-sm font-black ${step.stepColor} tracking-widest`}>
+                                    STEP {step.step}
+                                </span>
+                                <h3 className={`text-2xl md:text-3xl font-bold ${step.titleColor} mt-1 mb-2`}>
+                                    {step.title}
+                                </h3>
+                                <p className={`${step.descColor} text-base leading-relaxed`}>
+                                    {step.description}
+                                </p>
+                            </div>
+                        </motion.div>
                     ))}
-                </motion.div>
-
-                {/* Pesan Terakhir */}
-                <motion.div 
-                    style={{ opacity: finalTextOpacity }}
-                    className={`absolute inset-0 flex flex-col items-center justify-center z-10 text-center p-8 ${finalStep.bgColor}`}
-                >
-                    <div className="w-24 h-24 mt-20 bg-green-500 rounded-full mx-auto flex items-center justify-center mb-8">
-                        <finalStep.icon className={`w-12 h-12 ${finalStep.iconColor}`} />
-                    </div>
-                    <h3 className="text-5xl md:text-7xl font-bold leading-tight text-black">
-                        {finalStep.title}
-                    </h3>
-                    <p className="text-emerald-900 mt-4 text-lg max-w-xl">{finalStep.description}</p>
-                </motion.div>
-
-                {/* Progress Bar */}
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-1/3 h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                    <motion.div className="h-full bg-emerald-500" style={{ scaleX, originX: 0 }} />
                 </div>
             </div>
         </section>
