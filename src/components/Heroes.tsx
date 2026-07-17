@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import "leaflet/dist/leaflet.css";
 import { motion } from "framer-motion";
 import logo from "../../public/assets/logo/logo-only-white.svg";
+import bgmap from "../../public/assets/heroes/bgMap.svg";
 
 export default function Heroes() {
     return (
@@ -20,7 +21,7 @@ export default function Heroes() {
                 {/* Map — fills the entire section */}
                 <div className="absolute inset-0 z-0 bg-[#45474B] overflow-hidden">
                     <motion.img
-                        src="../../public/assets/heroes/bgMap.svg"
+                        src={bgmap}
                         alt=""
                         className="w-full h-full object-cover"
                         initial={{ scale: 1.3 }}
