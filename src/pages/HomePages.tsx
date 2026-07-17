@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
+const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook/jalan-rusak/laporan";
 
 export default function HomePages() {
     const [reports, setReports] = useState<Report[]>([]);

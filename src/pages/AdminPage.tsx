@@ -6,8 +6,8 @@ import { Toaster, toast } from "react-hot-toast";
 import type { Report } from "../types";
 
 const IMGBB_API_KEY = "eb35e048c700026796fb17f3edfb4d43";
-const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
-const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan";
+const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook/jalan-rusak/laporan";
+const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook/jalan-rusak/perbaikan";
 
 export default function AdminPage() {
     const [reports, setReports] = useState<Report[]>([]);
