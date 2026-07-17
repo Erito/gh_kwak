@@ -10,7 +10,7 @@ const ITEMS = [
 function RoadDivider({ color = "#9ca3af" }: { color?: string }) {
     return (
         <div
-            className="w-full h-0.75" // Perbaikan 1: h-[3px] -> h-0.75
+            className="w-full h-0.75" 
             style={{
                 backgroundImage: `repeating-linear-gradient(to right, ${color} 0px, ${color} 40px, transparent 40px, transparent 70px)`,
             }}
@@ -19,11 +19,9 @@ function RoadDivider({ color = "#9ca3af" }: { color?: string }) {
 }
 
 export default function Information() {
-    // Perbaikan 2: Menghapus cardVariants karena tidak pernah digunakan
 
     return (
         <>
-            {/* ── ROAD DIVIDER — Found a Roadblock? ── */}
             <section className="py-12 px-6 relative overflow-hidden">
                 <RoadDivider color="#9ca3af" />
                 <div className="relative mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 py-16 px-8 md:px-20 w-full">
@@ -49,7 +47,6 @@ export default function Information() {
                     <p className="text-center text-white/80 mb-6 text-2xl font-bold">... in 3 simple steps</p>
 
                     <div className="grid grid-cols-3 gap-6 md:gap-12 relative pt-8">
-                        {/* Dashed connector lines */}
                         <svg
                             className="absolute inset-0 w-full h-full pointer-events-none items-stretch overflow-visible"
                             preserveAspectRatio="none"
@@ -91,7 +88,6 @@ export default function Information() {
                 </div>
             </section>
 
-            {/* ── REPORT when you see… ── */}
             <section className="bg-[#383838] px-6 py-14 md:py-20">
                 <RoadDivider color="#F4CE14" />
 
@@ -136,7 +132,7 @@ export default function Information() {
                     <a href="/report" className="mx-auto mt-12 md:mt-16 px-6 py-3 md:px-8 md:py-4 bg-[#F5C800] text-slate-900 font-semibold shadow-md hover:bg-[#e0b800] transition-colors rounded-full duration-300">Start Reporting!</a>
                 </div>
             </section>
-            <div className="border-[#F4CE14] border-t-12"></div> {/* Perbaikan 4: border-t-[12px] -> border-t-12 */}
+            <div className="border-[#F4CE14] border-t-12"></div> 
         </>
     );
 }

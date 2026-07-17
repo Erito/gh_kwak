@@ -80,8 +80,6 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                             <MapPin className="w-5 h-5 text-[#FBD715]" />
                             <h3 className="text-lg font-bold text-slate-900">Kirim Laporan Baru</h3>
                         </div>
-
-                        {/* Gap diperkecil jadi gap-3 */}
                         <form onSubmit={handlePreSubmit} className="flex flex-col gap-3">
                             
                             {/* INPUT NAMA */}
@@ -110,13 +108,11 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                                 />
                             </div>
 
-                            {/* KOORDINAT LAT/LNG (Lebih tipis) */}
                             <div className="bg-[#fef1b5] py-2 px-4 rounded-xl flex justify-around text-xs font-bold text-slate-800 shadow-sm">
                                 <span>Lat: <span className="font-normal ml-1">{newLocation.lat.toFixed(4)}</span></span>
                                 <span>Lng: <span className="font-normal ml-1">{newLocation.lng.toFixed(4)}</span></span>
                             </div>
 
-                            {/* INPUT DETAIL KERUSAKAN (Rows jadi 2) */}
                             <div>
                                 <label className="block text-xs font-semibold text-slate-700 mb-1">Detail Kerusakan</label>
                                 <textarea
@@ -129,7 +125,6 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                                 />
                             </div>
 
-                            {/* UPLOAD FOTO (Tinggi dikurangi jadi h-20) */}
                             <div>
                                 <label className="block text-xs font-semibold text-slate-700 mb-1">Unggah Foto Lokasi</label>
                                 <label className="flex flex-col items-center justify-center w-full h-20 border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-white hover:bg-slate-50 transition-colors shadow-sm">
