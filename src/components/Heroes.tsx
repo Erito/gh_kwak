@@ -84,7 +84,7 @@ export default function Heroes() {
                     <ul className="flex flex-col gap-12 pl-10 relative">
                         {/* Absolute dashed line running through all bollards */}
                         <div
-                            className="absolute left-15 top-8 bottom-8 w-[2px]"
+                            className="absolute left-15 top-8 bottom-8 w-0.5"
                             style={{
                                 backgroundImage: "repeating-linear-gradient(to bottom, #1a1a1a55 0px, #1a1a1a55 6px, transparent 6px, transparent 12px)",
                             }}
@@ -94,7 +94,7 @@ export default function Heroes() {
                             { line1: "Integration with", bold: "Land Developers." },
                             { line1: "Fully ", bold2: "public", mid: " &", line2: "Fully ", bold3: "reliable." },
                             { line1: "Know everything", bold: "around you." },
-                        ].map((item, i) => (
+                        ].map((_, i) => (
                             <li key={i} className="flex gap-2 items-start relative">
                                 <div className="flex flex-col items-center w-10 shrink-0 z-10">
                                     <svg width="40" height="60" viewBox="0 0 44 64" fill="none">

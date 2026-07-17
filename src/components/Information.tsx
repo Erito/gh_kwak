@@ -1,62 +1,6 @@
-import { motion, type Variants } from "framer-motion";
-import { MapPin, MousePointerClick, Edit3, PenLine, CircleCheckBig } from "lucide-react";
+import { motion } from "framer-motion";
+import { MapPin, PenLine, CircleCheckBig } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const steps = [
-    {
-        icon: MousePointerClick,
-        title: "Mulai Laporan",
-        description: "Klik tombol 'Report' di navigasi untuk memulai proses pelaporan kerusakan jalan.",
-        bgColor: "bg-white",
-        titleColor: "text-slate-900",
-        descColor: "text-slate-600",
-        iconWrapper: "bg-emerald-100",
-        iconColor: "text-emerald-600",
-        stepColor: "text-emerald-500",
-        step: "01",
-    },
-    {
-        icon: MapPin,
-        title: "Tandai Lokasi",
-        description: "Pilih lokasi jalan rusak secara akurat di peta interaktif kami, baik dengan klik atau pencarian.",
-        // Background dibuat agak hijau agar beda dari Step 1
-        bgColor: "bg-emerald-50",
-        titleColor: "text-slate-900",
-        descColor: "text-slate-600",
-        // Icon wrapper diubah jadi putih agar kontras dengan background emerald-50
-        iconWrapper: "bg-white",
-        iconColor: "text-emerald-600",
-        stepColor: "text-emerald-600",
-        step: "02",
-    },
-    {
-        icon: Edit3,
-        title: "Isi Detail Laporan",
-        description: "Lengkapi laporan dengan deskripsi singkat dan unggah foto kerusakan untuk dianalisis oleh AI.",
-        bgColor: "bg-emerald-600",
-        titleColor: "text-white",
-        descColor: "text-emerald-50",
-        iconWrapper: "bg-white",
-        iconColor: "text-emerald-600",
-        stepColor: "text-emerald-200",
-        step: "03",
-    },
-];
-
-const finalStep = {
-    icon: CircleCheckBig,
-    title: "Kirim & Pantau",
-    description: "Laporan Anda akan langsung diterima oleh dinas terkait. Pantau progres perbaikan secara transparan.",
-    bgColor: "bg-amber-400",
-    titleColor: "text-slate-900",
-    descColor: "text-slate-800",
-    iconWrapper: "bg-slate-900",
-    iconColor: "text-amber-400",
-    stepColor: "text-slate-900",
-    step: "04",
-};
-
-const allSteps = [...steps, finalStep];
 
 const ITEMS = [
     { label: "Potholes", src: "./assets/pothole.jpg" },
@@ -67,7 +11,7 @@ const ITEMS = [
 function RoadDivider({ color = "#9ca3af" }: { color?: string }) {
     return (
         <div
-            className="w-full h-[3px]"
+            className="w-full h-0.75"
             style={{
                 backgroundImage: `repeating-linear-gradient(to right, ${color} 0px, ${color} 40px, transparent 40px, transparent 70px)`,
             }}
@@ -76,22 +20,6 @@ function RoadDivider({ color = "#9ca3af" }: { color?: string }) {
 }
 
 export default function Information() {
-    const cardVariants: Variants = {
-        offscreen: {
-            x: 150,
-            opacity: 0,
-        },
-        onscreen: {
-            x: 0,
-            opacity: 1,
-            transition: {
-                type: "spring",
-                bounce: 0.3,
-                duration: 0.9,
-            },
-        },
-    };
-
     return (
         <>
             {/* ── ROAD DIVIDER — Found a Roadblock? ── */}
@@ -173,7 +101,7 @@ export default function Information() {
                         {ITEMS.map(({ label, src }) => (
                             <div
                                 key={label}
-                                className="relative rounded-2xl overflow-hidden aspect-[3/4] sm:aspect-auto sm:h-72 md:h-80 drop-shadow-none hover:drop-shadow-[0_0_16px_rgba(245,200,0,0.5)] transition-all duration-300"
+                                className="relative rounded-2xl overflow-hidden aspect-3/4 sm:aspect-auto sm:h-72 md:h-80 drop-shadow-none hover:drop-shadow-[0_0_16px_rgba(245,200,0,0.5)] transition-all duration-300"
                             >
                                 <img
                                     src={src}
@@ -206,7 +134,7 @@ export default function Information() {
                     Start Reporting!
                 </Link>
             </section>
-            <div className="border-[#F4CE14] border-t-[12px]"></div>
+            <div className="border-[#F4CE14] border-t-12"></div>
         </>
     );
 }
