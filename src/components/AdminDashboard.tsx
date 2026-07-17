@@ -99,7 +99,7 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
                     {/* Kanan: Ringkasan Status & Tombol Aksi */}
                     <div className="flex items-center justify-between sm:justify-end gap-6">
                         {/* Ringkasan Statistik */}
-                        <div className="flex items-center gap-4 border-l border-slate-200 pl-4 hidden sm:flex">
+                        <div className=" items-center gap-4 border-l border-slate-200 pl-4 hidden sm:flex">
                             <div className="text-left">
                                 <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Laporan</p>
                                 <p className="text-lg font-bold text-slate-800 font-mono leading-tight">
