@@ -73,7 +73,6 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
                 className="bg-white border border-slate-100 rounded-2xl shadow-xl w-full max-w-7xl h-[90vh] flex flex-col relative overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Header Utama dengan aksen strip kuning tipis di atasnya */}
                 <div className="h-1.5 w-full bg-amber-400 shrink-0" />
                 <header className="px-6 py-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shrink-0 bg-white relative">
                     {/* Kiri: Info Utama */}

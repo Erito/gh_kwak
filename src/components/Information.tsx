@@ -1,117 +1,142 @@
-import { motion, type Variants } from "framer-motion";
-import { MapPin, Edit3, CheckCircle2, MousePointerClick } from "lucide-react";
+import { motion } from "framer-motion";
+import { MapPin, PenLine, CircleCheckBig } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const steps = [
-    {
-        icon: MousePointerClick,
-        title: "Mulai Laporan",
-        description: "Klik tombol 'Report' di navigasi untuk memulai proses pelaporan kerusakan jalan.",
-        bgColor: "bg-white",
-        titleColor: "text-slate-900",
-        descColor: "text-slate-600",
-        iconWrapper: "bg-emerald-100",
-        iconColor: "text-emerald-600",
-        stepColor: "text-emerald-500",
-        step: "01",
-    },
-    {
-        icon: MapPin,
-        title: "Tandai Lokasi",
-        description: "Pilih lokasi jalan rusak secara akurat di peta interaktif kami, baik dengan klik atau pencarian.",
-        // Background dibuat agak hijau agar beda dari Step 1
-        bgColor: "bg-emerald-50", 
-        titleColor: "text-slate-900",
-        descColor: "text-slate-600",
-        // Icon wrapper diubah jadi putih agar kontras dengan background emerald-50
-        iconWrapper: "bg-white", 
-        iconColor: "text-emerald-600",
-        stepColor: "text-emerald-600",
-        step: "02",
-    },
-    {
-        icon: Edit3,
-        title: "Isi Detail Laporan",
-        description: "Lengkapi laporan dengan deskripsi singkat dan unggah foto kerusakan untuk dianalisis oleh AI.",
-        bgColor: "bg-emerald-600", 
-        titleColor: "text-white",
-        descColor: "text-emerald-50",
-        iconWrapper: "bg-white",
-        iconColor: "text-emerald-600",
-        stepColor: "text-emerald-200",
-        step: "03",
-    },
+const ITEMS = [
+    { label: "Potholes", src: "./assets/pothole.jpg" },
+    { label: "Floods", src: "./assets/flood.jpg" },
+    { label: "Maintenance", src: "./assets/maintenance.jpg" },
 ];
 
-const finalStep = {
-    icon: CheckCircle2,
-    title: "Kirim & Pantau",
-    description: "Laporan Anda akan langsung diterima oleh dinas terkait. Pantau progres perbaikan secara transparan.",
-    bgColor: "bg-amber-400", 
-    titleColor: "text-slate-900",
-    descColor: "text-slate-800",
-    iconWrapper: "bg-slate-900",
-    iconColor: "text-amber-400",
-    stepColor: "text-slate-900",
-    step: "04",
-};
-
-const allSteps = [...steps, finalStep];
+function RoadDivider({ color = "#9ca3af" }: { color?: string }) {
+    return (
+        <div
+            className="w-full h-0.75"
+            style={{
+                backgroundImage: `repeating-linear-gradient(to right, ${color} 0px, ${color} 40px, transparent 40px, transparent 70px)`,
+            }}
+        />
+    );
+}
 
 export default function Information() {
-    const cardVariants: Variants = {
-        offscreen: {
-            x: 150, 
-            opacity: 0,
-        },
-        onscreen: {
-            x: 0, 
-            opacity: 1,
-            transition: {
-                type: "spring",
-                bounce: 0.3,
-                duration: 0.9,
-            },
-        },
-    };
-
     return (
-        <section className="relative bg-slate-100 text-slate-800 py-20 md:py-28 overflow-hidden">
-            <div className="max-w-3xl mx-auto px-4">
-                <h2 className="text-3xl md:text-5xl font-bold text-center text-slate-900 mb-3">
-                    Lapor Kerusakan <span className="text-emerald-600">Semudah itu</span>
-                </h2>
-                <p className="text-center text-gray-600 text-base md:text-lg mb-16 md:mb-24">
-                    Proses pelaporan yang dirancang untuk kecepatan dan kemudahan.
-                </p>
-
-                <div className="flex flex-col gap-8 md:gap-12">
-                    {allSteps.map((step, index) => (
-                        <motion.div
-                            key={index}
-                            className={`${step.bgColor} rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-start gap-6 shadow-xl border border-black/5`}
-                            initial="offscreen"
-                            whileInView="onscreen"
-                            viewport={{ once: true, amount: 0.4 }}
-                            variants={cardVariants}
-                        >
-                            <div className={`w-16 h-16 ${step.iconWrapper} rounded-full flex items-center justify-center shrink-0 shadow-md`}>
-                                <step.icon className={`w-8 h-8 ${step.iconColor}`} />
-                            </div>
-                            <div className="flex-1">
-                                <span className={`text-sm font-black ${step.stepColor} tracking-widest`}>
-                                    STEP {step.step}
-                                </span>
-                                <h3 className={`text-2xl md:text-3xl font-bold ${step.titleColor} mt-1 mb-2`}>
-                                    {step.title}
-                                </h3>
-                                <p className={`${step.descColor} text-base leading-relaxed`}>
-                                    {step.description}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
+        <>
+            {/* ── ROAD DIVIDER — Found a Roadblock? ── */}
+            <section className="py-12 md:py-20 px-4 md:px-6 relative overflow-hidden">
+                <RoadDivider color="#9ca3af" />
+                <div className="relative mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 md:gap-4 py-12 md:py-16 px-6 md:px-20 w-full text-center md:text-left">
+                    <h2 className="text-3xl sm:text-4xl md:text-4xl font-light text-white leading-tight">
+                        Found a <br className="hidden md:block" />
+                        <span className="font-black md:ml-2 text-[#F5C800]">Roadblock</span>?
+                    </h2>
+                    <div className="flex items-center">
+                        <span className="text-3xl sm:text-4xl md:text-5xl font-black text-white">Report it!</span>
+                    </div>
                 </div>
-            </div>
-        </section>
+                <RoadDivider color="#9ca3af" />
+            </section>
+
+            {/* ── 3 STEPS ── */}
+            <section className="bg-[#379777] py-12 md:py-8 px-6 md:rounded-tl-[120px] md:rounded-br-[120px] rounded-tl-[60px] rounded-br-[60px] shadow-[0_0_15px_10px_rgba(0,0,0,0.3)] relative overflow-hidden">
+                <div className="max-w-5xl mx-auto">
+                    <p className="text-center text-white/80 mb-8 md:mb-6 text-xl md:text-2xl font-bold">... in 3 simple steps</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative pt-4 md:pt-8">
+                        <svg
+                            className="hidden md:block absolute inset-0 w-full h-full pointer-events-none items-stretch overflow-visible"
+                            preserveAspectRatio="none"
+                            viewBox="10 0 80 50"
+                        >
+                            <path
+                                d="M 17 50 C 28 28, 38 72, 50 50 S 72 28, 83 50"
+                                fill="none"
+                                stroke="#383838"
+                                strokeWidth="0.8"
+                                strokeDasharray="3 2.5"
+                                strokeLinecap="round"
+                            />
+                        </svg>
+                        
+                        {[
+                            { icon: <MapPin className="w-10 h-10 md:w-12 md:h-12" />, label: "ENTER\nLOCATION", rotate: -4 },
+                            { icon: <PenLine className="w-10 h-10 md:w-12 md:h-12" />, label: "\nINPUT DETAILS", rotate: 7 },
+                            { icon: <CircleCheckBig className="w-10 h-10 md:w-12 md:h-12" />, label: "\nSUBMIT!", rotate: -2 },
+                        ].map(({ icon, label, rotate }, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: i * 0.12 }}
+                                className="flex justify-center"
+                            >
+                                <div
+                                    style={{ transform: `rotate(${rotate}deg)` }}
+                                    className="bg-white rounded-tl-[20px] rounded-br-[20px] p-5 md:p-6 flex flex-col items-end shadow-sm border-6 border-[#F5C800]/30 relative z-10 w-[80%] md:w-full drop-shadow-none hover:drop-shadow-[0_0_16px_rgba(245,200,0,0.5)] transition-all duration-300"
+                                >
+                                    <span className="text-slate-900">{icon}</span>
+                                    <span className="text-sm md:text-sm font-black text-slate-800 whitespace-pre-line leading-snug w-full text-start mt-2 md:mt-0">{label}</span>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <p className="text-center text-white/80 mt-10 md:mt-16 mb-2 md:mb-6 text-xl md:text-2xl font-bold">It cannot get any easier!</p>
+                </div>
+            </section>
+
+            {/* ── REPORT when you see… ── */}
+            <section className="bg-[#383838] px-4 md:px-6 py-16 md:py-20">
+                <RoadDivider color="#F4CE14" />
+
+                <div className="max-w-5xl pt-10 md:pt-12 mx-auto">
+                    {/* Heading */}
+                    <h2 className="text-3xl md:text-4xl font-light text-white text-center mb-8 md:mb-14">
+                        <span className="font-black text-[#F5C800]">Report</span> when you see...
+                    </h2>
+
+                    {/* Cards grid: Diubah jadi 3 kolom baku (grid-cols-3) di semua device */}
+                    <div className="grid grid-cols-3 gap-2 md:gap-5 px-0">
+                        {ITEMS.map(({ label, src }) => (
+                            <div
+                                key={label}
+                                /* Aspect rationya diubah jadi agak memanjang ke bawah (3/4) di HP agar tidak terlalu gepeng */
+                                className="relative rounded-xl md:rounded-2xl overflow-hidden aspect-3/4 sm:aspect-auto sm:h-72 md:h-80 drop-shadow-none hover:drop-shadow-[0_0_16px_rgba(245,200,0,0.5)] transition-all duration-300"
+                            >
+                                <img
+                                    src={src}
+                                    alt={label}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div
+                                    className="absolute inset-0"
+                                    style={{
+                                        background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)"
+                                    }}
+                                />
+                                {/* Teks dikecilkan dan jarak pinggir disesuaikan untuk layar HP */}
+                                <span className="absolute bottom-2 left-2 md:bottom-4 md:left-4 text-white text-[11px] sm:text-base md:text-lg font-black drop-shadow-lg leading-tight whitespace-pre-line">
+                                    {label}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+            
+            <RoadDivider color="#F4CE14" />
+            
+            <section className="bg-[#383838] pt-8 py-12 w-full text-center">
+                <Link
+                    to="/report"
+                    className="inline-block px-8 py-4 bg-[#F5C800] text-slate-900 text-lg md:text-base font-bold shadow-md hover:bg-[#e0b800] transition-all rounded-full duration-300 drop-shadow-none hover:drop-shadow-[0_0_16px_rgba(245,200,0,0.5)]"
+                >
+                    Start Reporting!
+                </Link>
+            </section>
+            
+            <div className="border-[#F4CE14] border-t-12"></div>
+        </>
     );
 }
