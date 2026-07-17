@@ -124,10 +124,40 @@
   font-style: italic;
 }
 
+@layer base {
+  html, body {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
 .font-main {
     font-family: 'Helvetica Now Display', sans-serif !important; 
 }
 
 * {
     font-family: 'Helvetica Now Display', sans-serif !important;
+}
+
+@keyframes ticker {
+  0%, 20% {
+    transform: translateY(0);
+  }
+
+  28%, 48% {
+    transform: translateY(-25%);
+  }
+
+  56%, 76% {
+    transform: translateY(-50%);
+  }
+
+  84%, 100% {
+    transform: translateY(-75%);
+  }
 }
