@@ -23,6 +23,7 @@ export default function ReportPage() {
     const [mapCenter, setMapCenter] = useState<[number, number]>([-6.2574, 106.6183]);
     const [showReturnHome, setShowReturnHome] = useState<boolean>(false);
     const navigate = useNavigate();
+    
     // Mobile: toggle between map and form
     const [mobileView, setMobileView] = useState<"map" | "form">("map");
 
@@ -77,22 +78,22 @@ export default function ReportPage() {
     };
 
     const handleLapor = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        // e.preventDefault() sudah tidak diperlukan di sini karena sudah dicegah di ReportForm, 
+        // tapi dibiarkan sebagai pelindung ekstra juga tidak apa-apa
+        e.preventDefault?.(); 
+
         if (!newLocation || !form.file) {
             toast.error("Pilih lokasi di peta dan unggah foto bukti.");
             return;
         }
-        if (!window.confirm("Apakah data yang kamu isi benar?")) {
-            toast.error("Pengiriman laporan dibatalkan.");
-            return;
-        }
-        if (!window.confirm("Apakah data yang kamu isi benar?")) {
-            toast.error("Pengiriman laporan dibatalkan.");
-            return;
-        }
+
+        // BAGIAN INI YANG SAYA HAPUS:
+        // window.confirm("Apakah data yang kamu isi benar?") (x2)
+
         setLoading(true);
         setShowReturnHome(false);
         const toastId = toast.loading("Mengirim laporan dan menganalisis gambar...");
+        
         try {
             const foto_url = await uploadToImgBB(form.file);
             const res = await fetch(N8N_WEBHOOK_POST_LAPOR, {
@@ -105,6 +106,7 @@ export default function ReportPage() {
                     foto_url,
                 }),
             });
+            
             if (res.ok) {
                 toast.success("Berhasil! Laporan Anda telah diterima.", { id: toastId });
                 setNewLocation(null);
@@ -117,6 +119,7 @@ export default function ReportPage() {
         } catch (err) {
             toast.error("Terjadi kesalahan sistem. Coba lagi nanti.", { id: toastId });
         }
+        
         setLoading(false);
     };
 
