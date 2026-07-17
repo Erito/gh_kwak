@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { X, MapPin, AlertTriangle, Map, UploadCloud, CheckCircle, Clock } from "lucide-react";
+import { X, MapPin, AlertTriangle, Map, UploadCloud, CheckCircle, Clock, User } from "lucide-react";
 import type { Report } from "../types";
 
 interface AdminDashboardProps {
@@ -75,55 +75,55 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
             >
                 {/* Header Utama dengan aksen strip kuning tipis di atasnya */}
                 <div className="h-1.5 w-full bg-amber-400 shrink-0" />
-<header className="px-6 py-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shrink-0 bg-white relative">
-    {/* Kiri: Info Utama */}
-    <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0 shadow-sm">
-            <Map className="w-6 h-6 text-amber-600" />
-        </div>
-        <div>
-            <div className="flex items-center gap-2">
-                <h2 className="text-xl font-extrabold text-slate-900 tracking-tight sm:text-2xl">
-                    Admin Dashboard
-                </h2>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
-                    Sistem Pantau
-                </span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-medium">
-                Kelola dan verifikasi laporan infrastruktur jalan dari warga.
-            </p>
-        </div>
-    </div>
+                <header className="px-6 py-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shrink-0 bg-white relative">
+                    {/* Kiri: Info Utama */}
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0 shadow-sm">
+                            <Map className="w-6 h-6 text-amber-600" />
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h2 className="text-xl font-extrabold text-slate-900 tracking-tight sm:text-2xl">
+                                    Admin Dashboard
+                                </h2>
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                                    Sistem Pantau
+                                </span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-medium">
+                                Kelola dan verifikasi laporan infrastruktur jalan dari warga.
+                            </p>
+                        </div>
+                    </div>
 
-    {/* Kanan: Ringkasan Status & Tombol Aksi */}
-    <div className="flex items-center justify-between sm:justify-end gap-6">
-        {/* Ringkasan Statistik */}
-        <div className="flex items-center gap-4 border-l border-slate-200 pl-4 hidden sm:flex">
-            <div className="text-left">
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Laporan</p>
-                <p className="text-lg font-bold text-slate-800 font-mono leading-tight">
-                    {sortedReports.length}
-                </p>
-            </div>
-            <div className="text-left">
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Selesai</p>
-                <p className="text-lg font-bold text-emerald-600 font-mono leading-tight">
-                    {sortedReports.filter(r => String(r.Status).toUpperCase() === "RESOLVED").length}
-                </p>
-            </div>
-        </div>
+                    {/* Kanan: Ringkasan Status & Tombol Aksi */}
+                    <div className="flex items-center justify-between sm:justify-end gap-6">
+                        {/* Ringkasan Statistik */}
+                        <div className="flex items-center gap-4 border-l border-slate-200 pl-4 hidden sm:flex">
+                            <div className="text-left">
+                                <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Laporan</p>
+                                <p className="text-lg font-bold text-slate-800 font-mono leading-tight">
+                                    {sortedReports.length}
+                                </p>
+                            </div>
+                            <div className="text-left">
+                                <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Selesai</p>
+                                <p className="text-lg font-bold text-emerald-600 font-mono leading-tight">
+                                    {sortedReports.filter(r => String(r.Status).toUpperCase() === "RESOLVED").length}
+                                </p>
+                            </div>
+                        </div>
 
-        {/* Tombol Close */}
-        <button 
-            onClick={onClose} 
-            className="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-100 hover:border-rose-100 text-slate-400 hover:text-rose-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
-            aria-label="Close dashboard"
-        >
-            <X className="w-5 h-5"/>
-        </button>
-    </div>
-</header>
+                        {/* Tombol Close */}
+                        <button 
+                            onClick={onClose} 
+                            className="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-100 hover:border-rose-100 text-slate-400 hover:text-rose-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+                            aria-label="Close dashboard"
+                        >
+                            <X className="w-5 h-5"/>
+                        </button>
+                    </div>
+                </header>
 
                 {/* Konten Utama */}
                 <div className="grow overflow-y-auto bg-slate-50/50">
@@ -142,6 +142,7 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
                                 <thead className="text-sm text-slate-500 font-semibold uppercase bg-white border-b border-slate-100 sticky top-0 z-10">
                                     <tr>
                                         <th className="px-6 py-4">ID Laporan</th>
+                                        <th className="px-6 py-4">Identitas Pelapor</th>
                                         <th className="px-6 py-4">Detail Kerusakan</th>
                                         <th className="px-6 py-4">Lokasi Wilayah</th>
                                         <th className="px-6 py-4 text-center">Status</th>
@@ -153,6 +154,22 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
                                         <tr key={report.ID_Laporan || idx} className="hover:bg-slate-50/70 transition-colors">
                                             <td className="px-6 py-4 font-mono text-sm font-semibold text-slate-500">
                                                 #{String(report.ID_Laporan || "-").slice(0, 8)}
+                                            </td>
+                                            {/* Kolom Identitas Pelapor Baru (Desktop) */}
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                                                        <User className="w-4 h-4" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-semibold text-slate-900 leading-tight">
+                                                            {report.Nama_Pelapor || "Anonim"}
+                                                        </p>
+                                                        <p className="text-xs text-slate-400 font-medium mt-0.5">
+                                                            {report.Telp_Pelapor || "-"}
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 max-w-md">
                                                 <p className="font-medium text-slate-900 leading-relaxed line-clamp-2">{report.Deskripsi}</p>
@@ -208,6 +225,14 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
                                                 #{String(report.ID_Laporan || "-").slice(0, 8)}
                                             </span>
                                             <StatusBadge status={report.Status}/>
+                                        </div>
+
+                                        {/* Info Pelapor untuk Tampilan Mobile */}
+                                        <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                            <p className="text-xs text-slate-600 font-medium">
+                                                Pelapor: <span className="font-bold text-slate-800">{report.Nama_Pelapor || "Anonim"}</span> ({report.Telp_Pelapor || "-"})
+                                            </p>
                                         </div>
 
                                         <div className="space-y-1.5">
