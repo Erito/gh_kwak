@@ -26,7 +26,6 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
 
     return (
         <div className="lg:col-span-1">
-            {/* --- MODAL KONFIRMASI (POP-UP KEREN) --- */}
             <AnimatePresence>
                 {showConfirm && (
                     <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
@@ -65,7 +64,6 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                     </div>
                 )}
             </AnimatePresence>
-            {/* --------------------------------------- */}
 
             <AnimatePresence mode="wait">
                 {newLocation ? (
@@ -87,7 +85,6 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                                 <span>Lng: {newLocation.lng.toFixed(5)}</span>
                             </div>
 
-                            {/* 👇 INPUT NAMA PELAPOR (BARU) */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Nama Pelapor</label>
                                 <input
@@ -100,7 +97,6 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                                 />
                             </div>
 
-                            {/* 👇 INPUT NOMOR TELEPON (BARU) */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Nomor Telepon (WA)</label>
                                 <input

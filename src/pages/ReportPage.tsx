@@ -90,7 +90,6 @@ export default function ReportPage() {
             return;
         }
 
-
         setLoading(true);
         setShowReturnHome(false);
         const toastId = toast.loading("Mengirim laporan dan menganalisis gambar...");
@@ -101,8 +100,8 @@ export default function ReportPage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    nama_pelapor: form.namaPelapor, // 👇 BARU
-                    telp_pelapor: form.telpPelapor, // 👇 BARU
+                    nama_pelapor: form.namaPelapor,
+                    telp_pelapor: form.telpPelapor,
                     latitude: newLocation.lat,
                     longitude: newLocation.lng,
                     deskripsi: form.deskripsi,
@@ -148,7 +147,6 @@ export default function ReportPage() {
         setLoading(false);
     };
 
-    // When user picks location on map, auto-switch to form on mobile
     const handleSetNewLocation = (loc: Location | null) => {
         setNewLocation(loc);
         setShowReturnHome(false);
@@ -199,27 +197,36 @@ export default function ReportPage() {
                 </div>
 
                 {pageLoading ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
                         {/* Skeleton Map */}
-                        <div className="lg:col-span-2 bg-slate-200 rounded-2xl animate-pulse h-[55vh] md:h-[65vh] lg:h-[75vh]"></div>
+                        <div className="lg:col-span-2 bg-slate-200 rounded-2xl animate-pulse min-h-[60vh]"></div>
                         {/* Skeleton Form */}
-                        <div className="lg:col-span-1 bg-slate-200 rounded-2xl animate-pulse h-64 lg:h-[75vh]"></div>
+                        <div className="lg:col-span-1 bg-slate-200 rounded-2xl animate-pulse min-h-[60vh]"></div>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                        {/* Map - hidden on mobile when form view is active */}
-                        <div className={`lg:block lg:col-span-2 ${mobileView === "map" ? "block" : "hidden"}`}>
-                            <MapComponent
-                                mapCenter={mapCenter}
-                                reports={reports}
-                                newLocation={newLocation}
-                                setNewLocation={handleSetNewLocation}
-                                handleAdminUpdate={handleAdminUpdate}
-                                loading={loading}
-                            />
+                    // Penambahan items-stretch agar kanan dan kiri saling menyamakan tinggi
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
+                        
+                        {/* MAP COLUMN */}
+                        <div className={`lg:col-span-2 flex flex-col ${mobileView === "map" ? "flex" : "hidden lg:flex"}`}>
+                            {/* Wrapper flex-1 dan relative yang akan memaksa tinggi peta mengikuti wadahnya */}
+                            <div className="relative flex-1 w-full min-h-[60vh] rounded-2xl overflow-hidden shadow-sm border border-slate-200 bg-slate-50 z-10">
+                                {/* absolute inset-0 memaksa MapComponent mengisi 100% ruang yang tersedia */}
+                                <div className="absolute inset-0 [&>div]:h-full! [&>div]:w-full! [&>div]:absolute! [&>div]:inset-0!">
+                                    <MapComponent
+                                        mapCenter={mapCenter}
+                                        reports={reports}
+                                        newLocation={newLocation}
+                                        setNewLocation={handleSetNewLocation}
+                                        handleAdminUpdate={handleAdminUpdate}
+                                        loading={loading}
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        {/* Form - hidden on mobile when map view is active */}
-                        <div className={`lg:block lg:col-span-1 ${mobileView === "form" ? "block" : "hidden"}`}>
+
+                        {/* FORM COLUMN */}
+                        <div className={`lg:col-span-1 flex flex-col ${mobileView === "form" ? "flex" : "hidden lg:flex"}`}>
                             {showReturnHome && (
                                 <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900 shadow-sm">
                                     <p className="font-semibold mb-2">Laporan berhasil dikirim.</p>
@@ -234,6 +241,7 @@ export default function ReportPage() {
                             )}
                             <ReportForm newLocation={newLocation} form={form} setForm={setForm} handleLapor={handleLapor} loading={loading} />
                         </div>
+
                     </div>
                 )}
             </main>
