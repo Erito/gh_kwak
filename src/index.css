@@ -1,1 +1,133 @@
 @import "tailwindcss";
+
+/* Normal Styles */
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-Hairline.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-Thin.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-ExtLt.ttf') format('truetype');
+  font-weight: 250; /* Extra Light fallback */
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-ExtBlk.ttf') format('truetype');
+  font-weight: 950; /* Extra Black fallback */
+  font-style: normal;
+}
+
+/* Italic Styles */
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-HairlineI.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-ThinIta.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-ExtLtIta.ttf') format('truetype');
+  font-weight: 250;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-LightIta.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-RegIta.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-MedIta.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-BoldIta.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-ExtBdIta.ttf') format('truetype');
+  font-weight: 750; /* Extra Bold Italic fallback */
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-BlackIta.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('../public/assets/font/HelveticaNowDisplay-ExtBlkIta.ttf') format('truetype');
+  font-weight: 950;
+  font-style: italic;
+}
+
+.font-main {
+    font-family: 'Helvetica Now Display', sans-serif !important; 
+}
+
+* {
+    font-family: 'Helvetica Now Display', sans-serif !important;
+}
