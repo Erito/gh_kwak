@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { CheckCircle2, AlertCircle, Wrench } from "lucide-react";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 import type { Report, Location } from "../types";
 
 // --- Setup Icon Leaflet ---
@@ -66,23 +66,19 @@ export default function MapComponent({ mapCenter, reports, newLocation, setNewLo
                 {reports.map((r, idx) => (
                     <Marker key={idx} position={[r.Latitude, r.Longitude]} icon={r.Status === "RESOLVED" ? greenIcon : redIcon}>
                         <Popup className="custom-popup">
-                            <div className="p-1 min-w-[160px] max-w-[220px]">
+                            <div className="p-1 min-w-40 max-w-40">
                                 <div
                                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold mb-2 ${r.Status === "RESOLVED"
                                             ? "bg-green-100 text-green-700"
-                                            : r.Status === "ON_PROGRESS"
-                                                ? "bg-yellow-100 text-yellow-700"
-                                                : "bg-red-100 text-red-700"
+                                            : "bg-red-100 text-red-700"
                                         }`}
                                 >
                                     {r.Status === "RESOLVED" ? (
                                         <CheckCircle2 className="w-3 h-3" />
-                                    ) : r.Status === "ON_PROGRESS" ? (
-                                        <Wrench className="w-3 h-3" />
                                     ) : (
                                         <AlertCircle className="w-3 h-3" />
                                     )}
-                                    {r.Status.replace("_", " ")}
+                                    {r.Status}
                                 </div>
                                 <p className="text-sm text-slate-600 mb-2">{r.Deskripsi}</p>
 
@@ -99,7 +95,7 @@ export default function MapComponent({ mapCenter, reports, newLocation, setNewLo
                                     )}
                                 </div>
 
-                                {(r.Status === "PENDING" || r.Status === "ON_PROGRESS") && (
+                                {r.Status === "PENDING" && (
                                     <div className="mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
                                         <p className="text-xs font-bold text-slate-700 mb-2">Pemerintah / Admin Area</p>
                                         <input

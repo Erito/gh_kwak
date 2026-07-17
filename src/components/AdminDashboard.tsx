@@ -50,7 +50,7 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-2 sm:p-4"
+            className="fixed inset-0 bg-black/50 z-100 flex items-center justify-center p-2 sm:p-4"
             onClick={onClose}
         >
             <motion.div
@@ -195,7 +195,7 @@ export default function AdminDashboard({ reports, onClose, onResolve, loading }:
 
                 {/* MODAL FORM PENYELESAIAN */}
                 {resolvingId && (
-                    <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-150 flex items-center justify-center p-4">
                         <form onSubmit={handleResolveSubmit} className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md border border-slate-200">
                             <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                                 <UploadCloud className="text-green-500 w-5 h-5"/> Bukti Perbaikan

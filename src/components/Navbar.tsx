@@ -20,7 +20,7 @@ export default function Navbar({ searchQuery, setSearchQuery, handleSearch }: Na
     ];
 
     return (
-        <nav className="fixed top-3 md:top-6 left-1/2 -translate-x-1/2 z-[9999] w-full max-w-6xl px-3 md:px-4">
+        <nav className="fixed top-3 md:top-6 left-1/2 -translate-x-1/2 z-9999 w-full max-w-6xl px-3 md:px-4">
             <div className="bg-white rounded-full shadow-lg pr-3 pl-4 md:pr-4 md:pl-6 py-2.5 md:py-3 flex items-center justify-between w-full">
                 
                 {/* Logo */}

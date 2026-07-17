@@ -114,10 +114,9 @@ export default function HomePages() {
                                             <Popup>
                                                 <div className="p-1 max-w-50">
                                                     <span className={`inline-block px-2 py-1 mb-2 text-[10px] font-bold rounded-md ${
-                                                        r.Status === "RESOLVED" ? "bg-green-100 text-green-700" :
-                                                        r.Status === "ON_PROGRESS" ? "bg-yellow-100 text-yellow-700" : "bg-red-100 text-red-700"
+                                                        r.Status === "RESOLVED" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
                                                     }`}>
-                                                        {String(r.Status || "PENDING").replace("_", " ")}
+                                                        {String(r.Status || "PENDING")}
                                                     </span>
                                                     <p className="text-sm font-bold text-slate-800 line-clamp-2">{r.Deskripsi}</p>
                                                     {r.Foto_Lapor && (
@@ -139,10 +138,9 @@ export default function HomePages() {
                                     <div className="p-4 md:p-5 flex flex-col grow">
                                         <div className="flex justify-between items-start mb-3 shrink-0">
                                             <span className={`px-2 py-1 text-[10px] font-bold rounded-md ${
-                                                report.Status === "RESOLVED" ? "bg-green-100 text-green-700" :
-                                                report.Status === "ON_PROGRESS" ? "bg-yellow-100 text-yellow-700" : "bg-red-100 text-red-700"
+                                                report.Status === "RESOLVED" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
                                             }`}>
-                                                {String(report.Status || "PENDING").replace("_", " ")}
+                                                {String(report.Status || "PENDING")}
                                             </span>
                                             <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded">
                                                 {report.Level_Urgensi || "Normal"}

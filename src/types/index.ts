@@ -5,7 +5,7 @@ export interface Report {
     Latitude: number;
     Longitude: number;
     Foto_Lapor: string;
-    Status: "PENDING" | "ON_PROGRESS" | "RESOLVED";
+    Status: "PENDING" | "RESOLVED";
     Foto_Perbaikan?: string;
     Dibuat_Pada: string;
     Selesai_Pada?: string;

@@ -7,7 +7,6 @@ import type { Report } from "../types";
 
 const IMGBB_API_KEY = "eb35e048c700026796fb17f3edfb4d43";
 const N8N_WEBHOOK_GET = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/laporan";
-
 const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook-test/jalan-rusak/perbaikan";
 
 export default function AdminPage() {
@@ -52,14 +51,14 @@ export default function AdminPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
                     id, 
-                    instansi_terkait: instansi, // Diambil oleh n8n untuk Instansi_Pelaksanaan
+                    instansi_terkait: instansi, 
                     foto_url 
                 }),
             });
 
             if (res.ok) {
                 toast.success("Sukses! Perbaikan divalidasi dan disimpan.", { id: toastId });
-                fetchReports(); // Refresh data untuk update tampilan
+                fetchReports(); 
             } else {
                 toast.error("Ditolak AI! Gambar tidak valid atau jalan belum diperbaiki.", { id: toastId });
             }
