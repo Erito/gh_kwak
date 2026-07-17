@@ -100,7 +100,7 @@ export default function Heroes() {
                             { line1: "Integration with", bold: "Land Developers." },
                             { line1: "Fully ", bold2: "public", mid: " &", line2: "Fully ", bold3: "reliable." },
                             { line1: "Know everything", bold: "around you." },
-                        ].map((item, i) => (
+                        ].map((_, i) => (
                             <li key={i} className="flex gap-2 items-center">
                             {/* Bollard + dashed connecor column */}
                             <div className="flex flex-col items-center w-10 shrink-0">
