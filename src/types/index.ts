@@ -14,6 +14,7 @@ export interface Report {
     Analisis_AI?: string;
     Kota_Kabupaten?: string;
     Instansi_Pelaksanaan?: string;
+    Telp_Pelapor?: string;
 }
 //tes
 export interface Location {
@@ -24,6 +25,8 @@ export interface Location {
 export interface FormDataState {
     deskripsi: string;
     file: File | null;
+    namaPelapor: string; 
+    telpPelapor: string; 
 }
 
 export interface NominatimResponse {

@@ -1,6 +1,6 @@
 import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, UploadCloud, AlertCircle } from "lucide-react"; // Tambahkan AlertCircle
+import { MapPin, UploadCloud, AlertCircle } from "lucide-react"; 
 import type { Location, FormDataState } from "../types";
 
 interface ReportFormProps {
@@ -12,19 +12,15 @@ interface ReportFormProps {
 }
 
 export default function ReportForm({ newLocation, form, setForm, handleLapor, loading }: ReportFormProps) {
-    // 1. Tambahkan state untuk mengontrol pop-up konfirmasi
     const [showConfirm, setShowConfirm] = useState(false);
 
-    // 2. Fungsi untuk menahan submit dan menampilkan pop-up
     const handlePreSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setShowConfirm(true);
     };
 
-    // 3. Fungsi untuk mengeksekusi submit asli jika user setuju
     const confirmSubmit = () => {
         setShowConfirm(false);
-        // Mengirimkan "dummy event" karena handleLapor asli membutuhkan parameter FormEvent
         handleLapor({ preventDefault: () => {} } as FormEvent<HTMLFormElement>);
     };
 
@@ -85,11 +81,36 @@ export default function ReportForm({ newLocation, form, setForm, handleLapor, lo
                             <h3 className="text-lg font-bold">Kirim Laporan Baru</h3>
                         </div>
 
-                        {/* 4. Ubah onSubmit menjadi handlePreSubmit */}
                         <form onSubmit={handlePreSubmit} className="flex flex-col gap-4">
                             <div className="bg-slate-50 p-3 rounded-lg flex justify-between text-xs font-mono text-slate-500">
                                 <span>Lat: {newLocation.lat.toFixed(5)}</span>
                                 <span>Lng: {newLocation.lng.toFixed(5)}</span>
+                            </div>
+
+                            {/* 👇 INPUT NAMA PELAPOR (BARU) */}
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">Nama Pelapor</label>
+                                <input
+                                    type="text"
+                                    placeholder="Masukkan nama Anda"
+                                    required
+                                    className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                                    value={form.namaPelapor}
+                                    onChange={(e) => setForm({ ...form, namaPelapor: e.target.value })}
+                                />
+                            </div>
+
+                            {/* 👇 INPUT NOMOR TELEPON (BARU) */}
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">Nomor Telepon (WA)</label>
+                                <input
+                                    type="tel"
+                                    placeholder="Contoh: 081234567890"
+                                    required
+                                    className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                                    value={form.telpPelapor}
+                                    onChange={(e) => setForm({ ...form, telpPelapor: e.target.value })}
+                                />
                             </div>
 
                             <div>

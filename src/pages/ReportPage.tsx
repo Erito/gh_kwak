@@ -16,7 +16,12 @@ const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook-tes
 export default function ReportPage() {
     const [reports, setReports] = useState<Report[]>([]);
     const [newLocation, setNewLocation] = useState<Location | null>(null);
-    const [form, setForm] = useState<FormDataState>({ deskripsi: "", file: null });
+    const [form, setForm] = useState<FormDataState>({ 
+        namaPelapor: "", 
+        telpPelapor: "", 
+        deskripsi: "", 
+        file: null 
+    });
     const [loading, setLoading] = useState<boolean>(false);
     const [pageLoading, setPageLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -78,8 +83,6 @@ export default function ReportPage() {
     };
 
     const handleLapor = async (e: React.FormEvent<HTMLFormElement>) => {
-        // e.preventDefault() sudah tidak diperlukan di sini karena sudah dicegah di ReportForm, 
-        // tapi dibiarkan sebagai pelindung ekstra juga tidak apa-apa
         e.preventDefault?.(); 
 
         if (!newLocation || !form.file) {
@@ -87,8 +90,6 @@ export default function ReportPage() {
             return;
         }
 
-        // BAGIAN INI YANG SAYA HAPUS:
-        // window.confirm("Apakah data yang kamu isi benar?") (x2)
 
         setLoading(true);
         setShowReturnHome(false);
@@ -100,6 +101,8 @@ export default function ReportPage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
+                    nama_pelapor: form.namaPelapor, // 👇 BARU
+                    telp_pelapor: form.telpPelapor, // 👇 BARU
                     latitude: newLocation.lat,
                     longitude: newLocation.lng,
                     deskripsi: form.deskripsi,
@@ -110,7 +113,7 @@ export default function ReportPage() {
             if (res.ok) {
                 toast.success("Berhasil! Laporan Anda telah diterima.", { id: toastId });
                 setNewLocation(null);
-                setForm({ deskripsi: "", file: null });
+                setForm({ namaPelapor: "", telpPelapor: "", deskripsi: "", file: null });
                 setShowReturnHome(true);
                 fetchReports();
             } else {
