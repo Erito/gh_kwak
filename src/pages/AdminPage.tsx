@@ -75,8 +75,9 @@ export default function AdminPage() {
             <Toaster
                 position="bottom-right"
                 reverseOrder={false}
+                containerClassName="max-sm:!bottom-4 max-sm:!right-4 max-sm:!top-auto max-sm:!left-auto"
                 toastOptions={{
-                    className: 'mb-4 mr-4',
+                    className: 'text-sm md:text-base max-sm:mb-2 mb-4 mr-4 shadow-lg',
                     duration: 4000,
                 }}
             />
