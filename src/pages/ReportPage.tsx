@@ -16,11 +16,11 @@ const N8N_WEBHOOK_POST_SELESAI = "https://titusericson.app.n8n.cloud/webhook/jal
 export default function ReportPage() {
     const [reports, setReports] = useState<Report[]>([]);
     const [newLocation, setNewLocation] = useState<Location | null>(null);
-    const [form, setForm] = useState<FormDataState>({ 
-        namaPelapor: "", 
-        telpPelapor: "", 
-        deskripsi: "", 
-        file: null 
+    const [form, setForm] = useState<FormDataState>({
+        namaPelapor: "",
+        telpPelapor: "",
+        deskripsi: "",
+        file: null
     });
     const [loading, setLoading] = useState<boolean>(false);
     const [pageLoading, setPageLoading] = useState<boolean>(true);
@@ -28,7 +28,7 @@ export default function ReportPage() {
     const [mapCenter, setMapCenter] = useState<[number, number]>([-6.2574, 106.6183]);
     const [showReturnHome, setShowReturnHome] = useState<boolean>(false);
     const navigate = useNavigate();
-    
+
     // Mobile: toggle between map and form
     const [mobileView, setMobileView] = useState<"map" | "form">("map");
 
@@ -83,7 +83,7 @@ export default function ReportPage() {
     };
 
     const handleLapor = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault?.(); 
+        e.preventDefault?.();
 
         if (!newLocation || !form.file) {
             toast.error("Pilih lokasi di peta dan unggah foto bukti.");
@@ -93,7 +93,7 @@ export default function ReportPage() {
         setLoading(true);
         setShowReturnHome(false);
         const toastId = toast.loading("Mengirim laporan dan menganalisis gambar...");
-        
+
         try {
             const foto_url = await uploadToImgBB(form.file);
             const res = await fetch(N8N_WEBHOOK_POST_LAPOR, {
@@ -108,7 +108,7 @@ export default function ReportPage() {
                     foto_url,
                 }),
             });
-            
+
             if (res.ok) {
                 toast.success("Berhasil! Laporan Anda telah diterima.", { id: toastId });
                 setNewLocation(null);
@@ -121,7 +121,7 @@ export default function ReportPage() {
         } catch (err) {
             toast.error("Terjadi kesalahan sistem. Coba lagi nanti.", { id: toastId });
         }
-        
+
         setLoading(false);
     };
 
@@ -165,7 +165,14 @@ export default function ReportPage() {
             transition={{ duration: 0.5 }}
             className="min-h-screen bg-slate-100 flex flex-col"
         >
-            <Toaster position="top-center" reverseOrder={false} />
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+                toastOptions={{
+                    className: 'mb-4 mr-4', 
+                    duration: 4000,
+                }}
+            />
             <Navbar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
@@ -173,23 +180,21 @@ export default function ReportPage() {
             />
 
             <main className="grow max-w-7xl mx-auto w-full px-3 sm:px-4 pt-20 sm:pt-24 md:pt-28 pb-4 md:pb-8">
-                
+
                 {/* Mobile Tab Switcher */}
                 <div className="flex lg:hidden mb-3 bg-white rounded-xl p-1 shadow-sm border border-slate-200">
                     <button
                         onClick={() => setMobileView("map")}
-                        className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${
-                            mobileView === "map" ? "bg-slate-800 text-white shadow" : "text-slate-500"
-                        }`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${mobileView === "map" ? "bg-slate-800 text-white shadow" : "text-slate-500"
+                            }`}
                     >
                         <Map className="w-4 h-4" />
                         Peta
                     </button>
                     <button
                         onClick={() => setMobileView("form")}
-                        className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${
-                            mobileView === "form" ? "bg-red-500 text-white shadow" : "text-slate-500"
-                        }`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${mobileView === "form" ? "bg-red-500 text-white shadow" : "text-slate-500"
+                            }`}
                     >
                         Formulir Laporan
                         {newLocation && <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />}
@@ -206,7 +211,7 @@ export default function ReportPage() {
                 ) : (
                     // Penambahan items-stretch agar kanan dan kiri saling menyamakan tinggi
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
-                        
+
                         {/* MAP COLUMN */}
                         <div className={`lg:col-span-2 flex flex-col ${mobileView === "map" ? "flex" : "hidden lg:flex"}`}>
                             {/* Wrapper flex-1 dan relative yang akan memaksa tinggi peta mengikuti wadahnya */}
